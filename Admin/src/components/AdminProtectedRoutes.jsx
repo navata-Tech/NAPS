@@ -1,6 +1,6 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { isAdminAuthenticated } from '../utility/IsAuthenticated';  // Make sure the path is correct
+import { isAdminAuthenticated } from '../utility/auth';  // Make sure the path is correct
 
 const AdminProtectedRoute = ({ children }) => {
   // If the admin is authenticated, render the children (the protected component)

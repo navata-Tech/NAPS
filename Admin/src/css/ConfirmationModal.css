@@ -1,0 +1,68 @@
+/* Styles for the modal background */
+.confirmation-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999; /* Ensure it's above other content */
+  }
+  
+  /* Box-style modal content */
+  .confirmation-modal-content {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    width: 300px; /* Adjust width as needed */
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Optional: add shadow to make the box pop */
+  }
+  
+  /* Modal message text */
+  .confirmation-modal-content p {
+    font-size: 16px;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  /* Buttons container */
+  .confirmation-modal-buttons {
+    display: flex;
+    justify-content: space-evenly;
+  }
+  
+  /* Styles for the 'Yes' button */
+  .confirm-button {
+    padding: 8px 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  /* Styles for the 'No' button */
+  .cancel-button {
+    padding: 8px 16px;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  /* Button hover effects */
+  .confirm-button:hover {
+    background-color: #45a049;
+  }
+  
+  .cancel-button:hover {
+    background-color: #e53935;
+  }
+  

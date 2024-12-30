@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import './App.css';
-import AdminLogin from './Pages/Login';
-import { BrowserRouter as Router, Routes, Route, Navigate, useLocation, useNavigate } from "react-router-dom";
-import AdminDashboard from './Pages/AdminDashboard';
+import LogOut from "./Pages/LogOut";
+import { Routes, Route, useLocation, useNavigate, Navigate } from "react-router-dom";
 import AdminProtectedRoute from './components/AdminProtectedRoutes';
-import { isAdminAuthenticated, logoutAdmin } from './utility/IsAuthenticated';
-import Sidebar from './components/Sidebar';  // Import Sidebar component
+import { isAdminAuthenticated, logoutAdmin } from './utility/auth';
+import Sidebar from './components/Sidebar'; 
 import ViewRegistration from './components/ViewRegistration';
+import LogIn from './Pages/LogIn';
 
-function AppContent() {
+function App() {
   const location = useLocation();
   const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(isAdminAuthenticated());
@@ -16,23 +16,24 @@ function AppContent() {
   useEffect(() => {
     const isLoggedIn = isAdminAuthenticated();
     setIsAuthenticated(isLoggedIn);
-
+  
     if (!isLoggedIn && location.pathname !== "/login") {
-      navigate("/login");
+      // Redirect to login if not authenticated
+      window.location.href = "/login";
     }
-
+  
     const checkTokenExpiration = () => {
       const expiration = localStorage.getItem("expiration");
       if (expiration && Date.now() > expiration) {
-        logoutAdmin();
+        logoutAdmin(); 
         setIsAuthenticated(false);
-        navigate("/login");
+        window.location.href = "/login"; 
       }
     };
-
+  
     const intervalId = setInterval(checkTokenExpiration, 60000);
     return () => clearInterval(intervalId);
-  }, [location, navigate]);
+  }, [location]);
 
   const hideSidebar = location.pathname === "/login";
 
@@ -40,20 +41,19 @@ function AppContent() {
     <>
       {!hideSidebar && isAuthenticated && (
         <div className="app-container d-flex">
-          <Sidebar />  {/* Use Sidebar component */}
+          <Sidebar /> 
           <main className="content-container">
             <div className="container mt-4">
               <Routes>
-                <Route path="/" element={<Navigate to="/AdminDashboard" />} />
-                {/* Add trailing /* to handle nested routes */}
                 <Route
-                  path="/AdminDashboard/*"
+                  path="/View-Registration"
                   element={
                     <AdminProtectedRoute>
-                      <AdminDashboard />
+                      <ViewRegistration />
                     </AdminProtectedRoute>
                   }
                 />
+                <Route path="/logout" element={<LogOut />} />
               </Routes>
             </div>
           </main>
@@ -65,19 +65,11 @@ function AppContent() {
           <Route path="/" element={<Navigate to="/login" />} />
           <Route
             path="/login"
-            element={<AdminLogin setIsAuthenticated={setIsAuthenticated} />}
+            element={<LogIn setIsAuthenticated={setIsAuthenticated} />}
           />
         </Routes>
       )}
     </>
-  );
-}
-
-function App() {
-  return (
-    <Router>
-      <AppContent />
-    </Router>
   );
 }
 

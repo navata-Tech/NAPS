@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-// import "../Style/Login.css"
+import "../css/Login.css"
 
 const LogIn = ({ setIsAuthenticated }) => {
   const [formData, setFormData] = useState({
@@ -43,7 +43,7 @@ const LogIn = ({ setIsAuthenticated }) => {
         localStorage.setItem('expiration', expirationTime);
   
         setIsAuthenticated(true);
-        navigate('/invoices');
+        navigate('/View-Registration');
       } else {
         setError(data.message || 'Login failed');
       }

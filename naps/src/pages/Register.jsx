@@ -1,4 +1,5 @@
-import React, { useState } from "react"; // Add this import
+import React, { useState, useEffect } from "react"; // Add this import
+import axios from "axios";
 import Header from "./Header";
 import Footer from "./Footer";
 
@@ -29,10 +30,11 @@ const Register = () => {
     foreignBankDetails: "",
   });
 
-  const [registrationFee, setRegistrationFee] = useState(0);
-  const [totalAmount, setTotalAmount] = useState(0);
-  const [isSubmitted, setIsSubmitted] = useState(false); // Add state for submission status
-  const [errorMessage, setErrorMessage] = useState(""); // Add state for error message
+  const [registrationFee, setRegistrationFee] = useState("");
+  const [totalAmount, setTotalAmount] = useState("");
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [errors, setErrors] = useState({});
 
   const categoryFees = {
     "SSN Members EARLY BIRD TILL FEB 28": "12000",
@@ -56,6 +58,41 @@ const Register = () => {
     $: 100,
   };
 
+  const validateForm = () => {
+    let tempErrors = {};
+
+    // Mandatory field validation
+    if (!formData.category) tempErrors.category = "Category is required.";
+    if (!formData.designation) tempErrors.designation = "Designation is required.";
+    if (!formData.organization) tempErrors.organization = "Organization is required.";
+    if (!formData.pressConference) tempErrors.pressConference = "Press conference attendance is required.";
+    if (!formData.salutation) tempErrors.salutation = "Salutation is required.";
+    if (!formData.fullName) tempErrors.fullName = "Full Name is required.";
+    if (!formData.email) tempErrors.email = "Email is required.";
+    if (!formData.phone) tempErrors.phone = "Phone number is required.";
+    if (!formData.registrationType) tempErrors.registrationType = "Registration type is required.";
+    if (!formData.agree) tempErrors.agree = "You must agree to receive updates.";
+
+    // Additional validation for "with abstract" type
+    if (formData.registrationType === "with abstract") {
+      if (!formData.affiliation) tempErrors.affiliation = "Affiliation is required for abstract submission.";
+      if (!formData.speciality) tempErrors.speciality = "Speciality is required for abstract submission.";
+      if (!formData.paperCategory) tempErrors.paperCategory = "Paper category is required.";
+      if (!formData.session) tempErrors.session = "Session is required.";
+      if (!formData.paperTitle) tempErrors.paperTitle = "Paper title is required.";
+      if (!formData.abstract) tempErrors.abstract = "Abstract is required.";
+    }
+
+    // Validation for spouse
+    if (formData.spouse && formData.accDesignation.some((d) => !d)) {
+      tempErrors.accDesignation = "All spouse details are required.";
+    }
+
+    setErrors(tempErrors);
+    return Object.keys(tempErrors).length === 0;
+  };
+
+
   const handleChange = (e) => {
     const { name, value, type, checked, files } = e.target;
 
@@ -67,16 +104,12 @@ const Register = () => {
       setFormData({ ...formData, [name]: value });
     }
 
-    // Update registration fee when category changes
     if (name === "category") {
       const fee = categoryFees[value] || "0";
-      const currency =
-        value.includes("SAARC") || value.includes("International")
-          ? "$"
-          : "NPR";
-      setRegistrationFee(`${currency} ${fee}`); // Include currency symbol
+      const currency = value.includes("SAARC") || value.includes("International") ? "$" : "NPR";
+      setRegistrationFee(`${currency} ${fee}`);
     }
-
+  
     if (name === "spouse" || name === "category") {
       calculateTotalAmount({
         ...formData,
@@ -85,20 +118,24 @@ const Register = () => {
     }
   };
 
-  const calculateTotalAmount = (updatedFormData = formData) => {
+  useEffect(() => {
+    calculateTotalAmount(formData);
+  }, [formData.category, formData.spouse, formData.accDesignation]);
+  
+  const calculateTotalAmount = (updatedFormData) => {
     let total = parseFloat(categoryFees[updatedFormData.category] || 0);
+    const isForeign = updatedFormData.category.includes("SAARC") || updatedFormData.category.includes("International");
   
     if (updatedFormData.spouse) {
-      const spouseCurrency = updatedFormData.category.includes("SAARC") || updatedFormData.category.includes("International") ? "$" : "NPR";
-      const spouseAmount = spouseFee[spouseCurrency] || 0;
+      const spouseAmount = spouseFee[isForeign ? "$" : "NPR"] || 0;
       total += spouseAmount * updatedFormData.accDesignation.length;
     }
   
-     // Determine the currency for total amount based on category
-     const currency = updatedFormData.category.includes("SAARC") || updatedFormData.category.includes("International") ? "$" : "NPR";
-     setTotalAmount(`${currency} ${total}`);
+    const currency = isForeign ? "$" : "NPR";
+    setRegistrationFee(`${currency} ${parseFloat(categoryFees[updatedFormData.category] || 0)}`);
+    setTotalAmount(`${currency} ${total}`);
   };
-
+  
   const handleSpouseDesignationChange = (index, value) => {
     const newDesignations = [...formData.accDesignation];
     newDesignations[index] = value;
@@ -122,25 +159,81 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    if (formData.agree) {
-      try {
-        // Send data to the backend
-        const response = await axios.post("http://127.0.0.1:5000/register", formData);
-
-        // If the response is successful, display success message
-        if (response.status === 200) {
-          setIsSubmitted(true);
-          setErrorMessage(""); // Clear any previous error message
-        }
-      } catch (error) {
-        setErrorMessage("Error submitting form. Please try again.");
+  
+    if (!validateForm()) {
+      setErrorMessage("Please fill out all required fields.");
+      return;
+    }
+  
+    // Ensure numeric values for backend
+    const registrationFeeValue = parseFloat(
+      registrationFee.replace(/[^\d.-]/g, "")
+    ) || 0;
+  
+    const totalAmountValue = parseFloat(
+      totalAmount.replace(/[^\d.-]/g, "")
+    ) || 0;
+  
+    const dataToSend = new FormData();
+    Object.entries(formData).forEach(([key, value]) => {
+      if (key === "file") {
+        dataToSend.append(key, value);
+      } else if (Array.isArray(value)) {
+        value.forEach((item) => dataToSend.append(`${key}[]`, item));
+      } else {
+        dataToSend.append(key, value);
       }
-    } else {
-      alert("Please agree to receive updates before submitting.");
+    });
+  
+    // Append numeric values
+    dataToSend.append("registrationFee", registrationFeeValue);
+    dataToSend.append("totalAmount", totalAmountValue);
+  
+    try {
+      const response = await axios.post("http://127.0.0.1:5000/register", dataToSend, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+  
+      if (response.status === 200 || response.status === 201) {
+        setIsSubmitted(true);
+        setErrorMessage("");
+        setTimeout(() => {
+          setFormData({
+            category: "",
+            salutation: "",
+            designation: "",
+            organization: "",
+            pressConference: "",
+            registrationType: "",
+            fullName: "",
+            email: "",
+            phone: "",
+            affiliation: "",
+            speciality: "",
+            paperCategory: "",
+            session: "",
+            paperTitle: "",
+            abstract: "",
+            spouse: false,
+            accDesignation: [""],
+            country: "",
+            file: null,
+            agree: false,
+            paymentMethod: "",
+            foreignCountry: "",
+            foreignBankDetails: "",
+          });
+          setIsSubmitted(false);
+        }, 5000);
+      }
+    } catch (error) {
+      setErrorMessage("Something went wrong. Please try again.");
+      console.error(error);
     }
   };
-
+  
   const renderPaymentMethodFields = () => {
     if (formData.country === "India") {
       return (
@@ -202,11 +295,10 @@ const Register = () => {
   return (
     <>
       <Header />
-
       <main className="main" id="main">
         <section>
           <div>
-            <div className="registration-section">
+            <div className="header-title">
               <div className="overlay">
                 <h1>Registration</h1>
                 <p className="sub-title">
@@ -243,8 +335,14 @@ const Register = () => {
                       ))}
                     </select>
                   </div>
-                  <div className="column-item">
-                    <strong>Registration Fee:</strong> {registrationFee}
+                  <div className="row-item">
+                    <div>
+                      <label>Registration Fees:</label>
+                      <span className="registration-fee">
+                        {" "}
+                        {registrationFee}
+                      </span>
+                    </div>
                   </div>
                 </div>
                 <div className="content-row">
@@ -281,7 +379,12 @@ const Register = () => {
                           checked={formData.pressConference === "Yes"}
                           onChange={handleChange}
                         />
-                        <span className="txt">Yes</span>
+                        <span
+                          className="txt
+                        "
+                        >
+                          Yes
+                        </span>
                       </label>
                       <label>
                         <input
@@ -291,7 +394,12 @@ const Register = () => {
                           checked={formData.pressConference === "No"}
                           onChange={handleChange}
                         />
-                        <span className="txt">No</span>
+                        <span
+                          className="txt
+                        "
+                        >
+                          No
+                        </span>
                       </label>
                     </div>
                   </div>
@@ -335,8 +443,6 @@ const Register = () => {
                       onChange={handleChange}
                     />
                   </div>
-                </div>
-                <div className="content-row">
                   <div className="row-item category">
                     <label>Phone :</label>
                     <input
@@ -363,7 +469,12 @@ const Register = () => {
                           }
                           onChange={handleChange}
                         />
-                        <span className="txt">without abstract</span>
+                        <span
+                          className="txt
+                        "
+                        >
+                          without abstract
+                        </span>
                       </label>
                       <label>
                         <input
@@ -375,7 +486,12 @@ const Register = () => {
                           }
                           onChange={handleChange}
                         />
-                        <span className="txt">with abstract</span>
+                        <span
+                          className="txt
+                        "
+                        >
+                          with abstract
+                        </span>
                       </label>
                     </div>
                   </div>
@@ -484,7 +600,8 @@ const Register = () => {
                   </>
                 )}
                 {/* Spouse checkbox and details */}
-                <div className="content-row">
+
+                <div className="row-item category">
                   <label>
                     <input
                       type="checkbox"
@@ -492,71 +609,88 @@ const Register = () => {
                       checked={formData.spouse}
                       onChange={handleChange}
                     />
-                    I have an accompanying spouse/person
+
+                    <span className="txt">
+                      {" "}
+                      I have an accompanying spouse/person
+                    </span>
                   </label>
                 </div>
-                {formData.spouse && (
-                  <div className="content-column spouse-details mt-4">
-                    <h3>Accompanying Spouse/Person Details</h3>
-                    {formData.accDesignation.map((designation, index) => (
-                      <div
-                        className="mb-3 p-3 border rounded bg-light"
-                        key={index}
-                      >
-                        <div className="row mb-3 p-3 border rounded bg-light align-items-center">
-                          <div className="registration-fee">
-                            Spouse Fee:{" "}
-                            {formData.category.includes("SAARC") ||
-                            formData.category.includes("International")
-                              ? "$100"
-                              : "NPR 8000"}
+
+                <div
+                  className="person-details
+                "
+                >
+                  {formData.spouse && (
+                    <div className="content-column spouse-details">
+                      <h3>Accompanying Spouse/Person Details</h3>
+                      {formData.accDesignation.map((designation, index) => (
+                        <div key={index}>
+                          <div>
+                            <div
+                              className="content-row
+                            "
+                            >
+                              <div>
+                                <label className="form-label">Full Name:</label>
+                                <input
+                                  className="box-field"
+                                  placeholder="Full Name"
+                                  type="text"
+                                  name="accDesignation"
+                                  value={designation}
+                                  onChange={(e) =>
+                                    handleSpouseDesignationChange(
+                                      index,
+                                      e.target.value
+                                    )
+                                  }
+                                />
+                              </div>
+                              <div>
+                                <label className="form-label">
+                                  Designation:
+                                </label>
+                                <input
+                                  className="box-field"
+                                  placeholder="Designation"
+                                  type="text"
+                                  name="designation"
+                                />
+                              </div>
+                            </div>
+                            <div className="partner-fee">
+                              Spouse Fee:{" "}
+                              {formData.category.includes("SAARC") ||
+                              formData.category.includes("International")
+                                ? "$100"
+                                : "NPR 8000"}
+                            </div>
                           </div>
-                          <div className="col-md-3">
-                            <label className="form-label">Full Name:</label>
-                            <input
-                              className="form-control"
-                              placeholder="Full Name"
-                              type="text"
-                              name="accDesignation"
-                              value={designation}
-                              onChange={(e) =>
-                                handleSpouseDesignationChange(
-                                  index,
-                                  e.target.value
-                                )
-                              }
-                            />
-                          </div>
-                          <div className="col-md-3">
-                            <label className="form-label">Designation:</label>
-                            <input
-                              className="form-control"
-                              placeholder="Designation"
-                              type="text"
-                              name="designation"
-                            />
-                          </div>
-                          <div className="col-md-3">
+                          <div
+                            className="btn-holder
+                          "
+                          >
                             <button
                               type="button"
-                              className="btn btn-danger"
+                              className="btn-danger"
                               onClick={() => removeSpouseDesignation(index)}
                             >
                               Remove
                             </button>
                           </div>
                         </div>
-                      </div>
-                    ))}
-                    <button
-                      type="button"
-                      className="btn btn-primary"
-                      onClick={addSpouseDesignation}
-                    >
-                      Add Spouse/Person
-                    </button>
-                  </div>
-                )}
+                      ))}
+                      <button
+                        type="button"
+                        className="add-btn"
+                        onClick={addSpouseDesignation}
+                      >
+                        Add a person
+                      </button>
+                    </div>
+                  )}
+                </div>
                 <div className="content-row">
                   <div className="row-item category">
                     <label>Country:</label>
@@ -566,15 +700,21 @@ const Register = () => {
                       value={formData.country}
                       onChange={handleChange}
                     >
+                      <option value="">Choose Country</option>
                       <option value="Nepal">Nepal</option>
                       <option value="India">India</option>
                       <option value="Other-countries">Others</option>
                     </select>
                   </div>
                 </div>
-                {/* Render payment method based on the country */}
-                {renderPaymentMethodFields()}
-                <strong>Total Amount:</strong> {totalAmount}
+                <div className="content-row">
+                  <div className="row-item category">
+                  </div>
+                </div>
+                <div className="content-row">
+                  <span className="total-amt">Total Amount:</span>
+                  <span className="total-price"> {totalAmount}</span>
+                </div>
                 <div className="content-row">
                   <div className="row-item">
                     <label>Upload Voucher:</label>
@@ -600,32 +740,35 @@ const Register = () => {
                     </label>
                   </div>
                   <button
-                className="primary-button"
-                type="button" // Change to "button" to prevent default form submission
-                onClick={handleSubmit}
-              >
-                Submit <i className="fa-solid fa-arrow-right"></i>
-              </button>
-
-              {isSubmitted && (
-                <div className="success-message">
-                  <div style={{ color: "green" }}>
-                    <i className="fa fa-check-circle" style={{ fontSize: "24px" }}></i>
-                    <span> Registration Successful!</span>
-                  </div>
+                    className="primary-button"
+                    type="submit"
+                    onClick={handleSubmit}
+                  >
+                    Submit <i className="fa-solid fa-arrow-right"></i>
+                  </button>
                 </div>
-              )}
-
-              {errorMessage && (
-                <div className="error-message">
-                  <p>{errorMessage}</p>
-                </div>
-              )}
+                <div>
+                  {isSubmitted && (
+                    <div className="success-message">
+                      <div style={{ color: "green" }}>
+                        <i
+                          className="fa fa-check-circle"
+                          style={{ fontSize: "24px" }}
+                        ></i>
+                        <span> Registration Successful!</span>
+                      </div>
+                    </div>
+                  )}
+                  {errorMessage && (
+                    <div className="error-message">
+                      <p>{errorMessage}</p>
+                    </div>
+                  )}
                 </div>
               </form>
             </div>
           </div>
-        </section>
+          </section>
       </main>
       <Footer />
     </>
