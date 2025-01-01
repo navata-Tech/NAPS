@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"; // Add this import
 import axios from "axios";
-import Header from "./Header";
-import Footer from "./Footer";
+import "../css/register-about.css";
+
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -63,23 +63,41 @@ const Register = () => {
 
     // Mandatory field validation
     if (!formData.category) tempErrors.category = "Category is required.";
-    if (!formData.designation) tempErrors.designation = "Designation is required.";
-    if (!formData.organization) tempErrors.organization = "Organization is required.";
-    if (!formData.pressConference) tempErrors.pressConference = "Press conference attendance is required.";
+    if (!formData.designation)
+      tempErrors.designation = "Designation is required.";
+    if (!formData.organization)
+      tempErrors.organization = "Organization is required.";
+    if (!formData.pressConference)
+      tempErrors.pressConference = "Press conference attendance is required.";
     if (!formData.salutation) tempErrors.salutation = "Salutation is required.";
     if (!formData.fullName) tempErrors.fullName = "Full Name is required.";
-    if (!formData.email) tempErrors.email = "Email is required.";
+    // Email validation (must contain @)
+    if (!formData.email) {
+      tempErrors.email = "Email is required.";
+    } else if (!formData.email.includes("@")) {
+      tempErrors.email = "Please enter a valid email address.";
+    }
     if (!formData.phone) tempErrors.phone = "Phone number is required.";
-    if (!formData.registrationType) tempErrors.registrationType = "Registration type is required.";
-    if (!formData.agree) tempErrors.agree = "You must agree to receive updates.";
+    if (!formData.registrationType)
+      tempErrors.registrationType = "Registration type is required.";
+    if (!formData.agree)
+      tempErrors.agree = "You must agree to receive updates.";
+    if (!formData.file) tempErrors.file = "Voucher upload is required.";
+    if (!formData.file) tempErrors.country = "country is required.";
 
     // Additional validation for "with abstract" type
     if (formData.registrationType === "with abstract") {
-      if (!formData.affiliation) tempErrors.affiliation = "Affiliation is required for abstract submission.";
-      if (!formData.speciality) tempErrors.speciality = "Speciality is required for abstract submission.";
-      if (!formData.paperCategory) tempErrors.paperCategory = "Paper category is required.";
+      if (!formData.affiliation)
+        tempErrors.affiliation =
+          "Affiliation is required for abstract submission.";
+      if (!formData.speciality)
+        tempErrors.speciality =
+          "Speciality is required for abstract submission.";
+      if (!formData.paperCategory)
+        tempErrors.paperCategory = "Paper category is required.";
       if (!formData.session) tempErrors.session = "Session is required.";
-      if (!formData.paperTitle) tempErrors.paperTitle = "Paper title is required.";
+      if (!formData.paperTitle)
+        tempErrors.paperTitle = "Paper title is required.";
       if (!formData.abstract) tempErrors.abstract = "Abstract is required.";
     }
 
@@ -229,8 +247,15 @@ const Register = () => {
         }, 5000);
       }
     } catch (error) {
-      setErrorMessage("Something went wrong. Please try again.");
-      console.error(error);
+      if (error.response && error.response.status === 400) {
+        // Handle the case when the email already exists or any other validation error
+        console.error('Error: ', error.response.data.error);
+        setErrorMessage(`Error: ${error.response.data.error}`);  // Display the error message
+        alert(`Error: ${error.response.data.error}`);
+      } else {
+        console.error('Unexpected error:', error);
+        setErrorMessage("Something went wrong. Please try again.");
+      }
     }
   };
   
@@ -294,7 +319,6 @@ const Register = () => {
 
   return (
     <>
-      <Header />
       <main className="main" id="main">
         <section>
           <div>
@@ -334,6 +358,10 @@ const Register = () => {
                         </option>
                       ))}
                     </select>
+                    {errors.file && (
+                      <span className="error">{errors.category}</span>
+                    )}{" "}
+                    {/* Error message */}
                   </div>
                   <div className="row-item">
                     <div>
@@ -356,6 +384,10 @@ const Register = () => {
                       value={formData.designation}
                       onChange={handleChange}
                     />
+                    {errors.file && (
+                      <span className="error">{errors.designation}</span>
+                    )}{" "}
+                    {/* Error message */}
                   </div>
                   <div className="row-item">
                     <label>Organization:</label>
@@ -367,6 +399,10 @@ const Register = () => {
                       value={formData.organization}
                       onChange={handleChange}
                     />
+                    {errors.file && (
+                      <span className="error">{errors.organization}</span>
+                    )}{" "}
+                    {/* Error message */}
                   </div>
                   <div className="row-item">
                     <label>Are you attending the press conference event?</label>
@@ -404,6 +440,10 @@ const Register = () => {
                     </div>
                   </div>
                 </div>
+                {errors.file && (
+                  <span className="error">{errors.pressConference}</span>
+                )}{" "}
+                {/* Error message */}
                 <div className="content-row">
                   <div className="salutation row-item">
                     <label>Salutation:</label>
@@ -419,6 +459,10 @@ const Register = () => {
                       <option value="Mrs">Mrs.</option>
                       <option value="Miss">Miss.</option>
                     </select>
+                    {errors.file && (
+                      <span className="error">{errors.salutation}</span>
+                    )}{" "}
+                    {/* Error message */}
                   </div>
                   <div className="row-item">
                     <label>Full Name :</label>
@@ -430,6 +474,10 @@ const Register = () => {
                       value={formData.fullName}
                       onChange={handleChange}
                     />
+                    {errors.file && (
+                      <span className="error">{errors.fullName}</span>
+                    )}{" "}
+                    {/* Error message */}
                   </div>
 
                   <div className="row-item">
@@ -442,6 +490,9 @@ const Register = () => {
                       value={formData.email}
                       onChange={handleChange}
                     />
+                    {errors.email && (
+                      <span className="error">{errors.email}</span>
+                    )}
                   </div>
                   <div className="row-item category">
                     <label>Phone :</label>
@@ -453,6 +504,10 @@ const Register = () => {
                       value={formData.phone}
                       onChange={handleChange}
                     />
+                    {errors.file && (
+                      <span className="error">{errors.phone}</span>
+                    )}{" "}
+                    {/* Error message */}
                   </div>
                 </div>
                 <div className="content-row">
@@ -494,6 +549,10 @@ const Register = () => {
                         </span>
                       </label>
                     </div>
+                    {errors.file && (
+                      <span className="error">{errors.registrationType}</span>
+                    )}{" "}
+                    {/* Error message */}
                   </div>
                 </div>
                 {formData.registrationType === "with abstract" && (
@@ -509,6 +568,10 @@ const Register = () => {
                           value={formData.affiliation}
                           onChange={handleChange}
                         />
+                        {errors.file && (
+                          <span className="error">{errors.affiliation}</span>
+                        )}{" "}
+                        {/* Error message */}
                       </div>
                       <div className="row-item category">
                         <label>Speciality/ Subspeciality:</label>
@@ -520,9 +583,12 @@ const Register = () => {
                           value={formData.speciality}
                           onChange={handleChange}
                         />
+                        {errors.file && (
+                          <span className="error">{errors.speciality}</span>
+                        )}{" "}
+                        {/* Error message */}
                       </div>
                     </div>
-
                     <div className="content-row">
                       <div className="row-item">
                         <label>Category:</label>
@@ -547,7 +613,10 @@ const Register = () => {
                         </div>
                       </div>
                     </div>
-
+                    {errors.file && (
+                      <span className="error">{errors.paperCategory}</span>
+                    )}{" "}
+                    {/* Error message */}
                     <div className="content-row">
                       <div className="row-item category">
                         <label>Session:</label>
@@ -573,6 +642,10 @@ const Register = () => {
                             </option>
                           ))}
                         </select>
+                        {errors.file && (
+                          <span className="error">{errors.session}</span>
+                        )}{" "}
+                        {/* Error message */}
                       </div>
                       <div className="row-item category">
                         <label>Title of the paper:</label>
@@ -583,9 +656,12 @@ const Register = () => {
                           value={formData.paperTitle}
                           onChange={handleChange}
                         />
+                        {errors.file && (
+                          <span className="error">{errors.paperTitle}</span>
+                        )}{" "}
+                        {/* Error message */}
                       </div>
                     </div>
-
                     <div className="content-row">
                       <div className="row-item category">
                         <label>Abstract (max 300 words):</label>
@@ -595,12 +671,15 @@ const Register = () => {
                           value={formData.abstract}
                           onChange={handleChange}
                         ></textarea>
+                        {errors.file && (
+                          <span className="error">{errors.abstract}</span>
+                        )}{" "}
+                        {/* Error message */}
                       </div>
                     </div>
                   </>
                 )}
                 {/* Spouse checkbox and details */}
-
                 <div className="row-item category">
                   <label>
                     <input
@@ -616,7 +695,6 @@ const Register = () => {
                     </span>
                   </label>
                 </div>
-
                 <div
                   className="person-details
                 "
@@ -659,6 +737,12 @@ const Register = () => {
                                 />
                               </div>
                             </div>
+                            {errors.file && (
+                              <span className="error">
+                                {errors.accDesignation}
+                              </span>
+                            )}{" "}
+                            {/* Error message */}
                             <div className="partner-fee">
                               Spouse Fee:{" "}
                               {formData.category.includes("SAARC") ||
@@ -705,11 +789,15 @@ const Register = () => {
                       <option value="India">India</option>
                       <option value="Other-countries">Others</option>
                     </select>
+                    {errors.file && (
+                      <span className="error">{errors.country}</span>
+                    )}{" "}
+                    {/* Error message */}
+                    <span> {renderPaymentMethodFields()}</span>
                   </div>
                 </div>
                 <div className="content-row">
-                  <div className="row-item category">
-                  </div>
+                  <div className="row-item category"></div>
                 </div>
                 <div className="content-row">
                   <span className="total-amt">Total Amount:</span>
@@ -718,10 +806,19 @@ const Register = () => {
                 <div className="content-row">
                   <div className="row-item">
                     <label>Upload Voucher:</label>
-                    <input type="file" name="file" onChange={handleChange} />
+                    <input
+                      type="file"
+                      name="file"
+                      onChange={handleChange}
+                      accept=".pdf,.jpg,.png"
+                    />
                     <span className="alert-txt">
                       Only pdf, jpg, png files are accepted.
                     </span>
+                    {errors.file && (
+                      <span className="error">{errors.file}</span>
+                    )}{" "}
+                    {/* Error message */}
                   </div>
                 </div>
                 <div className="content-row txt-btn-holder">
@@ -738,7 +835,12 @@ const Register = () => {
                         above.
                       </span>
                     </label>
+                    {errors.file && (
+                      <span className="error">{errors.agree}</span>
+                    )}{" "}
+                    {/* Error message */}
                   </div>
+
                   <button
                     className="primary-button"
                     type="submit"
@@ -749,18 +851,21 @@ const Register = () => {
                 </div>
                 <div>
                   {isSubmitted && (
-                    <div className="success-message">
+                    <div className="message-box success-message">
                       <div style={{ color: "green" }}>
                         <i
                           className="fa fa-check-circle"
-                          style={{ fontSize: "24px" }}
+                          style={{ fontSize: "24px", marginRight: "10px" }}
                         ></i>
-                        <span> Registration Successful!</span>
+                        <span>
+                          Thank you for registration, you'll get confirmation
+                          email after verification.
+                        </span>
                       </div>
                     </div>
                   )}
                   {errorMessage && (
-                    <div className="error-message">
+                    <div className="message-box error-message">
                       <p>{errorMessage}</p>
                     </div>
                   )}
@@ -768,9 +873,8 @@ const Register = () => {
               </form>
             </div>
           </div>
-          </section>
+        </section>
       </main>
-      <Footer />
     </>
   );
 };

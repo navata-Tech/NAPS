@@ -1,4 +1,5 @@
 import logo from "../assets/logo.png";
+
 const Footer = () => {
   return (
     <footer className="footer-container">
@@ -22,19 +23,16 @@ const Footer = () => {
           <h5 className="footer-title">Quick Links</h5>
           <ul>
             <li>
-              <a href="#">Home</a>
+              <a href="/">Home</a>
             </li>
             <li>
-              <a href="#">Our Team</a>
+              <a href="/team">Our Team</a>
             </li>
             <li>
-              <a href="#">Blog</a>
+              <a href="/about-us">About Us</a>
             </li>
             <li>
-              <a href="#">About Us</a>
-            </li>
-            <li>
-              <a href="#">Contact Us</a>
+              <a href="/contact-us">Contact Us</a>
             </li>
           </ul>
         </div>
@@ -56,7 +54,7 @@ const Footer = () => {
             Join Our Social Community
           </h5>
           <div className="social-icons">
-            <a href="#">
+            <a href="https://www.facebook.com/NepalPaediatricSurgeons/">
               <i className="fab fa-facebook"></i>
             </a>
             <a href="#">
@@ -67,6 +65,33 @@ const Footer = () => {
             </a>
           </div>
         </div>
+      </div>
+      <div
+        className="footer-bottom"
+        style={{
+          textAlign: "center",
+          padding: "1rem 0",
+        }}
+      >
+        <p
+          style={{
+            color: "#fff",
+            fontWeight: "bold",
+            fontSize: "1rem",
+            margin: 0,
+          }}
+        >
+          © {new Date().getFullYear()} All Rights Reserved by{" "}
+          <span
+            style={{
+              fontWeight: "bold",
+              fontStyle: "italic",
+              color: "#fbb016",
+            }}
+          >
+            NavataTech❤️
+          </span>
+        </p>
       </div>
     </footer>
   );

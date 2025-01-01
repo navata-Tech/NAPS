@@ -22,6 +22,32 @@ const ViewRegistration = () => {
         fetchRegistrations();
     }, []);
 
+    const handleExportExcel = async () => {
+        try {
+            // Request the server to export the registrations to Excel
+            const response = await axios.get('http://127.0.0.1:5000/api/registrations-excel', {
+                responseType: 'blob',
+            });
+    
+            // Create a formatted date string (e.g., "2025-01-01_12-30-45")
+            const date = new Date();
+            const formattedDate = date.toISOString().replace(/T/, '_').replace(/\..+/, '').replace(/:/g, '-');
+    
+            // Create a temporary link to trigger the download with the date and time in the filename
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', `registrations_${formattedDate}.xlsx`);  // Use formatted date in filename
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(url);  // Revoke the URL after the download
+        } catch (error) {
+            console.error('Error exporting Excel:', error.response?.data || error.message);
+        }
+    };
+    
+
     // Get current registrations for pagination
     const indexOfLastRegistration = currentPage * registrationsPerPage;
     const indexOfFirstRegistration = indexOfLastRegistration - registrationsPerPage;
@@ -29,7 +55,7 @@ const ViewRegistration = () => {
 
     // Function to change page
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
+    
     const viewPdf = async (registrationNumber) => {
         try {
             // Fetch the registration PDF
@@ -58,6 +84,9 @@ const ViewRegistration = () => {
     return (
         <div className="registrations-container">
             <h2>View Registrations</h2>
+            <button className="export-button" onClick={handleExportExcel}>
+                Export to Excel
+            </button>
             <table className="table">
                 <thead>
                     <tr>

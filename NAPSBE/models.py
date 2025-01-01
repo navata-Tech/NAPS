@@ -35,3 +35,13 @@ class Registration(db.Model):
     registration_fee = db.Column(db.Integer, default=5000)
     total_amount = db.Column(db.Integer)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+class Enquiry(db.Model):
+    __tablename__ = 'enquiries'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100))
+    phone = db.Column(db.String(20))
+    email = db.Column(db.String(100))
+    message = db.Column(db.Text)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)

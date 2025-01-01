@@ -7,6 +7,7 @@ import { isAdminAuthenticated, logoutAdmin } from './utility/auth';
 import Sidebar from './components/Sidebar'; 
 import ViewRegistration from './components/ViewRegistration';
 import LogIn from './Pages/LogIn';
+import ViewEnquiry from "./components/ViewEnquiry";
 
 function App() {
   const location = useLocation();
@@ -41,7 +42,7 @@ function App() {
     <>
       {!hideSidebar && isAuthenticated && (
         <div className="app-container d-flex">
-          <Sidebar /> 
+          <Sidebar />
           <main className="content-container">
             <div className="container mt-4">
               <Routes>
@@ -50,6 +51,14 @@ function App() {
                   element={
                     <AdminProtectedRoute>
                       <ViewRegistration />
+                    </AdminProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/View-Enquiry"
+                  element={
+                    <AdminProtectedRoute>
+                      <ViewEnquiry />
                     </AdminProtectedRoute>
                   }
                 />

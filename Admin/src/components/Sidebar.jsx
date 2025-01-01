@@ -27,6 +27,14 @@ const Sidebar = () => {
           </li>
           <li className="nav-item">
             <NavLink
+              to="/View-Enquiry"
+              className={({ isActive }) => (isActive ? "active" : "")}
+            >
+              View Enquiry
+            </NavLink>
+          </li>
+          <li className="nav-item">
+            <NavLink
               to="/logout"
               className={({ isActive }) => (isActive ? "active" : "")}
             >

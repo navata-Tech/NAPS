@@ -1,9 +1,11 @@
 from datetime import datetime, timedelta, timezone
 from functools import wraps
+import openpyxl
 from io import BytesIO
 from reportlab.pdfbase import pdfmetrics
 import os
 from click import wrap_text
+from flask_mail import Mail, Message
 from sqlalchemy.sql import text  # Correct SQLAlchemy import for text()
 # Remove or avoid importing `from pydoc import text` if not necessary
 from flask import Flask, jsonify, request, send_file
@@ -15,7 +17,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity, unset_jwt_cookies,verify_jwt_in_request
 import logging
 from werkzeug.security import generate_password_hash, check_password_hash
-from models import db,Registration
+from models import Enquiry, db,Registration
 from werkzeug.utils import secure_filename
 from uuid import uuid4
 from reportlab.pdfgen import canvas
@@ -69,6 +71,16 @@ def admin_required(fn):
             return jsonify({'message': 'Unauthorized access', 'error': str(e)}), 401
     return wrapper
 
+# Configuring the mail settings
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USE_SSL'] = True
+app.config['MAIL_USERNAME'] = 'udityadav528@gmail.com'  # Your email address
+app.config['MAIL_PASSWORD'] = 'qgao ogov fllo zqfm'  # Your email password (or app-specific password)
+app.config['MAIL_DEFAULT_SENDER'] = 'udityadav528@gmail.com'
+
+mail = Mail(app)
+
 
 @app.route('/')
 def hello_world():
@@ -116,6 +128,14 @@ def create_tables():
                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 )
             """))
+            connection.execute(text("""CREATE TABLE IF NOT EXISTS enquiries (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                name VARCHAR(100),
+                phone VARCHAR(20),
+                email VARCHAR(100),
+                message TEXT,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )"""))
 
         
         print("Tables created successfully.")
@@ -238,6 +258,12 @@ def create_registration():
         # Debugging logs for incoming data
         logging.info(f"Received form data: {data}")
 
+
+        # Check if email already exists
+        existing_registration = Registration.query.filter_by(email=data.get('email')).first()
+        if existing_registration:
+            return jsonify({'message': 'Error', 'error': 'Email already exists'}), 400
+
         # Safely extract registration fee and total amount
         try:
             registration_fee = float(data.get('registrationFee', 0))
@@ -291,6 +317,38 @@ def create_registration():
         db.session.add(new_registration)
         db.session.commit()
 
+
+        # Send confirmation email to the user
+        user_email = new_registration.email
+        user_message = Message(
+            'Registration Confirmation',
+            recipients=[user_email]
+        )
+        user_message.body = f"""
+        Thank you for your registration!
+        
+        Your registration number is: {registration_number}
+        You will receive a confirmation email after verification.
+        """
+        mail.send(user_message)
+
+        # Send notification email to the admin
+        admin_email = 'udityadav2221@gmail.com'
+        admin_message = Message(
+            'New Registration Submitted',
+            recipients=[admin_email]
+        )
+        admin_message.body = f"""
+        A new registration has been submitted:
+        
+        Registration Number: {registration_number}
+        Name: {new_registration.full_name}
+        Email: {new_registration.email}
+        Phone: {new_registration.phone}
+        Category: {new_registration.category}
+        """
+        mail.send(admin_message)
+
         return jsonify({
             'message': 'Registration created successfully!',
             'registration_number': registration_number,
@@ -328,6 +386,57 @@ def get_all_registrations():
     except Exception as e:
         app.logger.error(f"Error fetching registrations: {str(e)}")
         return jsonify({'error': 'Error fetching registrations', 'message': str(e)}), 500
+    
+
+
+
+@app.route('/api/registrations-excel', methods=['GET'])
+def export_registrations_to_excel():
+    try:
+        # Fetch all registrations from the database
+        registrations = Registration.query.all()
+
+        # Create a new Excel workbook and sheet
+        wb = openpyxl.Workbook()
+        sheet = wb.active
+        sheet.title = "Registrations"
+
+        # Define the header row
+        header = [
+            'Registration Number', 'Full Name', 'Email', 'Phone', 'Category',
+            'Salutation', 'Designation', 'Organization', 'Press Conference', 'Registration Type',
+            'Speciality', 'Paper Category', 'Session', 'Paper Title', 'Abstract',
+            'Spouse', 'Country', 'File Name', 'Registration Fee', 'Total Amount', 'Acc Designation'
+        ]
+        sheet.append(header)
+
+        # Append each registration's data to the sheet
+        for reg in registrations:
+            # Ensure 'spouse' field is boolean and converts to 'Yes'/'No'
+            spouse = 'Yes' if reg.spouse else 'No'
+
+            row = [
+                reg.registration_number, reg.full_name, reg.email, reg.phone, reg.category,
+                reg.salutation, reg.designation, reg.organization, reg.press_conference,
+                reg.registration_type, reg.speciality, reg.paper_category, reg.session,
+                reg.paper_title, reg.abstract, spouse, reg.country, reg.file_name,
+                reg.registration_fee, reg.total_amount, ', '.join(reg.acc_designation) if reg.acc_designation else ''
+            ]
+            sheet.append(row)
+
+        # Save the workbook in memory as a binary stream
+        output = BytesIO()
+        wb.save(output)
+        output.seek(0)
+
+        # Send the file to the client for download
+        return send_file(output, as_attachment=True, download_name="registrations.xlsx", mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+
+    except Exception as e:
+        app.logger.error(f"Error exporting registrations to Excel: {str(e)}")
+        return jsonify({'error': 'Error exporting registrations', 'message': str(e)}), 500
+
+    
 def wrap_text(text, width, font_name, font_size):
     """
     Wrap text for the given width and font size.
@@ -519,7 +628,87 @@ def generate_registration_pdf_by_form(registration_number):
     except Exception as e:
         app.logger.error(f"Error generating PDF for registration {registration_number}: {str(e)}")
         return jsonify({'error': 'Error generating PDF', 'message': str(e)}), 500
+    
 
+@app.route('/enquiry', methods=['POST'])
+def submit_enquiry():
+    try:
+        data = request.get_json()  # Receive the JSON data from the frontend
+        name = data.get('name')
+        phone = data.get('phone')
+        email = data.get('email')
+        message = data.get('message')
+
+        # Create a new enquiry record
+        new_enquiry = Enquiry(
+            name=name,
+            phone=phone,
+            email=email,
+            message=message
+        )
+
+        # Save the new enquiry in the database
+        db.session.add(new_enquiry)
+        db.session.commit()
+
+        return jsonify({'message': 'Thank you for your enquiry. We will notify you via email soon!'}), 201
+
+    except Exception as e:
+        db.session.rollback()  # Roll back the session in case of error
+        return jsonify({'message': 'There was an error submitting your enquiry. Please try again later.'}), 500
+
+@app.route('/enquiry', methods=['GET'])
+def get_enquiries():
+    try:
+        # Fetch all the enquiry records from the database
+        enquiries = Enquiry.query.all()
+
+        # Log the number of enquiries fetched
+        print(f"Fetched {len(enquiries)} enquiries.")
+
+        # Prepare the list of enquiries to return
+        enquiry_list = [
+            {
+                'id': enquiry.id,
+                'name': enquiry.name,
+                'phone': enquiry.phone,
+                'email': enquiry.email,
+                'message': enquiry.message,
+                'date': enquiry.created_at.strftime('%Y-%m-%d %H:%M:%S')  # Use created_at here
+            }
+            for enquiry in enquiries
+        ]
+
+        return jsonify(enquiry_list), 200
+
+    except Exception as e:
+        print(f"Error: {e}")
+        return jsonify({'message': 'There was an error retrieving the enquiries. Please try again later.'}), 500
+    
+@app.route('/enquiry/<int:id>', methods=['GET'])
+def get_enquiry(id):
+    try:
+        # Fetch the enquiry record by id from the database
+        enquiry = Enquiry.query.get(id)
+
+        if enquiry is None:
+            return jsonify({'message': 'Enquiry not found'}), 404
+
+        # Prepare the enquiry details to return
+        enquiry_details = {
+            'id': enquiry.id,
+            'name': enquiry.name,
+            'phone': enquiry.phone,
+            'email': enquiry.email,
+            'message': enquiry.message,
+            'date': enquiry.created_at.strftime('%Y-%m-%d %H:%M:%S')
+        }
+
+        return jsonify(enquiry_details), 200
+
+    except Exception as e:
+        print(f"Error: {e}")
+        return jsonify({'message': 'There was an error retrieving the enquiry details. Please try again later.'}), 500
 
 
 if __name__ == '__main__':
