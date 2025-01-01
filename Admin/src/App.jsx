@@ -8,6 +8,7 @@ import Sidebar from './components/Sidebar';
 import ViewRegistration from './components/ViewRegistration';
 import LogIn from './Pages/LogIn';
 import ViewEnquiry from "./components/ViewEnquiry";
+import ViewVouchers from "./components/ViewVouchers";
 
 function App() {
   const location = useLocation();
@@ -51,6 +52,14 @@ function App() {
                   element={
                     <AdminProtectedRoute>
                       <ViewRegistration />
+                    </AdminProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/View-Voucher"
+                  element={
+                    <AdminProtectedRoute>
+                      <ViewVouchers />
                     </AdminProtectedRoute>
                   }
                 />

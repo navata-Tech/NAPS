@@ -1,6 +1,5 @@
 import logo from "../assets/logo.png";
 import { Link, useNavigate } from "react-router-dom";
-import { Link as ScrollLink } from "react-scroll";
 import { useState } from "react";
 import "../css/Header.css";
 import "../css/register-about.css";
@@ -33,22 +32,21 @@ const Header = () => {
           </button>
         </div>
         <nav className={`nav-links ${isMenuOpen ? "open" : ""}`}>
-          {/* Navigate to the Home Page */}
-          <button onClick={() => handleNavigateAndClose("/")}>Home</button>
+          <Link to="/" className="mr-5 hover:text-third">
+            Home
+          </Link>
 
-          {/* Navigate to the About Us Page */}
-          <button onClick={() => handleNavigateAndClose("/about-us")}>
+          <Link to="/about-us" className="mr-5 hover:text-third">
             About
-          </button>
+          </Link>
 
-          {/* Navigate to the About Us Page */}
-          <button onClick={() => handleNavigateAndClose("/team")}>
+          <Link to="/team" className="mr-5 hover:text-third">
             Our-Team
-          </button>
-          {/* Navigate to the About Us Page */}
-          <button onClick={() => handleNavigateAndClose("/contact-us")}>
-            Contact Us
-          </button>
+          </Link>
+
+          <Link to="/contact-us" className="mr-5 hover:text-third">
+            Contact
+          </Link>
 
           {/* Navigate to the Register Page */}
           <button>

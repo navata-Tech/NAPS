@@ -1355,3 +1355,218 @@
 2025-01-01 07:01:46,173 INFO: * Restarting with stat
 2025-01-01 07:01:48,334 WARNING: * Debugger is active!
 2025-01-01 07:01:48,350 INFO: * Debugger PIN: 101-903-271
+2025-01-01 07:04:15,535 INFO: * Detected change in 'E:\\Navata\\NAPS\\napsbe\\app.py', reloading
+2025-01-01 07:04:15,741 INFO: * Restarting with stat
+2025-01-01 07:04:17,844 WARNING: * Debugger is active!
+2025-01-01 07:04:17,848 INFO: * Debugger PIN: 101-903-271
+2025-01-01 07:04:29,961 INFO: * Detected change in 'E:\\Navata\\NAPS\\napsbe\\models.py', reloading
+2025-01-01 07:04:30,135 INFO: * Restarting with stat
+2025-01-01 07:04:32,171 WARNING: * Debugger is active!
+2025-01-01 07:04:32,175 INFO: * Debugger PIN: 101-903-271
+2025-01-01 07:05:51,745 INFO: * Detected change in 'E:\\Navata\\NAPS\\napsbe\\app.py', reloading
+2025-01-01 07:05:52,033 INFO: * Restarting with stat
+2025-01-01 07:06:39,539 INFO:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-01-01 07:06:39,540 INFO:[33mPress CTRL+C to quit[0m
+2025-01-01 07:06:39,542 INFO: * Restarting with stat
+2025-01-01 07:06:41,471 WARNING: * Debugger is active!
+2025-01-01 07:06:41,487 INFO: * Debugger PIN: 101-903-271
+2025-01-01 07:06:45,941 INFO:127.0.0.1 - - [01/Jan/2025 07:06:45] "GET /api/registrations HTTP/1.1" 200 -
+2025-01-01 07:06:49,377 INFO:127.0.0.1 - - [01/Jan/2025 07:06:49] "GET /api/registrations-pdf/REG-20241229101814-42b08082 HTTP/1.1" 200 -
+2025-01-01 07:15:19,624 INFO: * Detected change in 'E:\\Navata\\NAPS\\napsbe\\app.py', reloading
+2025-01-01 07:15:19,844 INFO: * Restarting with stat
+2025-01-01 07:15:22,221 WARNING: * Debugger is active!
+2025-01-01 07:15:22,221 INFO: * Debugger PIN: 101-903-271
+2025-01-01 07:15:30,492 ERROR:Error generating PDF for registration REG-20241229222118-3943ee36: Cannot open resource "./assets/logo.png"
+2025-01-01 07:15:30,492 INFO:127.0.0.1 - - [01/Jan/2025 07:15:30] "[35m[1mGET /api/registrations-pdf/REG-20241229222118-3943ee36 HTTP/1.1[0m" 500 -
+2025-01-01 07:15:42,397 INFO: * Detected change in 'E:\\Navata\\NAPS\\napsbe\\app.py', reloading
+2025-01-01 07:15:42,741 INFO: * Restarting with stat
+2025-01-01 07:15:44,925 WARNING: * Debugger is active!
+2025-01-01 07:15:44,929 INFO: * Debugger PIN: 101-903-271
+2025-01-01 07:17:23,755 INFO: * Detected change in 'E:\\Navata\\NAPS\\napsbe\\app.py', reloading
+2025-01-01 07:17:23,999 INFO: * Restarting with stat
+2025-01-01 07:17:26,036 WARNING: * Debugger is active!
+2025-01-01 07:17:26,052 INFO: * Debugger PIN: 101-903-271
+2025-01-01 07:17:30,347 INFO:127.0.0.1 - - [01/Jan/2025 07:17:30] "GET /api/registrations-pdf/REG-20241229101814-42b08082 HTTP/1.1" 200 -
+2025-01-01 07:17:55,320 INFO: * Detected change in 'E:\\Navata\\NAPS\\napsbe\\app.py', reloading
+2025-01-01 07:17:55,548 INFO: * Restarting with stat
+2025-01-01 07:17:57,792 WARNING: * Debugger is active!
+2025-01-01 07:17:57,809 INFO: * Debugger PIN: 101-903-271
+2025-01-01 07:19:57,816 INFO: * Detected change in 'E:\\Navata\\NAPS\\napsbe\\app.py', reloading
+2025-01-01 07:19:58,012 INFO: * Restarting with stat
+2025-01-01 07:20:00,117 WARNING: * Debugger is active!
+2025-01-01 07:20:00,124 INFO: * Debugger PIN: 101-903-271
+2025-01-01 07:20:08,240 INFO:127.0.0.1 - - [01/Jan/2025 07:20:08] "GET /api/registrations-pdf/REG-20241229104318-faa2ef33 HTTP/1.1" 200 -
+2025-01-01 07:20:30,759 INFO:127.0.0.1 - - [01/Jan/2025 07:20:30] "GET /api/registrations-pdf/REG-20241230081913-ff0b8e20 HTTP/1.1" 200 -
+2025-01-01 07:20:41,392 INFO:127.0.0.1 - - [01/Jan/2025 07:20:41] "GET /api/registrations-pdf/REG-20241230082701-29b8cd13 HTTP/1.1" 200 -
+2025-01-01 07:20:51,948 INFO:127.0.0.1 - - [01/Jan/2025 07:20:51] "GET /api/registrations-pdf/REG-20241230083215-2ef16242 HTTP/1.1" 200 -
+2025-01-01 07:21:20,902 INFO: * Detected change in 'E:\\Navata\\NAPS\\napsbe\\app.py', reloading
+2025-01-01 07:21:21,144 INFO: * Restarting with stat
+2025-01-01 07:21:23,420 WARNING: * Debugger is active!
+2025-01-01 07:21:23,420 INFO: * Debugger PIN: 101-903-271
+2025-01-01 07:21:24,456 INFO: * Detected change in 'E:\\Navata\\NAPS\\napsbe\\app.py', reloading
+2025-01-01 07:21:24,647 INFO: * Restarting with stat
+2025-01-01 07:21:26,591 WARNING: * Debugger is active!
+2025-01-01 07:21:26,595 INFO: * Debugger PIN: 101-903-271
+2025-01-01 07:24:12,896 INFO: * Detected change in 'E:\\Navata\\NAPS\\napsbe\\app.py', reloading
+2025-01-01 07:24:13,103 INFO: * Restarting with stat
+2025-01-01 07:24:15,134 WARNING: * Debugger is active!
+2025-01-01 07:24:15,144 INFO: * Debugger PIN: 101-903-271
+2025-01-01 07:24:29,581 INFO:127.0.0.1 - - [01/Jan/2025 07:24:29] "GET /api/registrations-pdf/REG-20241231212853-dc92d863 HTTP/1.1" 200 -
+2025-01-01 07:24:45,440 INFO: * Detected change in 'E:\\Navata\\NAPS\\napsbe\\app.py', reloading
+2025-01-01 07:24:45,757 INFO: * Restarting with stat
+2025-01-01 07:24:48,187 WARNING: * Debugger is active!
+2025-01-01 07:24:48,191 INFO: * Debugger PIN: 101-903-271
+2025-01-01 07:24:55,452 INFO:127.0.0.1 - - [01/Jan/2025 07:24:55] "GET /api/registrations-pdf/REG-20241231222530-87963255 HTTP/1.1" 200 -
+2025-01-01 07:28:32,156 INFO: * Detected change in 'E:\\Navata\\NAPS\\napsbe\\app.py', reloading
+2025-01-01 07:28:32,348 INFO: * Restarting with stat
+2025-01-01 07:28:34,637 WARNING: * Debugger is active!
+2025-01-01 07:28:34,652 INFO: * Debugger PIN: 101-903-271
+2025-01-01 07:28:41,294 ERROR:Error generating PDF for registration REG-20241231221444-a93d423c: name 'box_x' is not defined
+2025-01-01 07:28:41,299 INFO:127.0.0.1 - - [01/Jan/2025 07:28:41] "[35m[1mGET /api/registrations-pdf/REG-20241231221444-a93d423c HTTP/1.1[0m" 500 -
+2025-01-01 07:28:43,309 ERROR:Error generating PDF for registration REG-20241231221444-a93d423c: name 'box_x' is not defined
+2025-01-01 07:28:43,312 INFO:127.0.0.1 - - [01/Jan/2025 07:28:43] "[35m[1mGET /api/registrations-pdf/REG-20241231221444-a93d423c HTTP/1.1[0m" 500 -
+2025-01-01 07:28:53,209 ERROR:Error generating PDF for registration REG-20241231222021-1da7ba54: name 'box_x' is not defined
+2025-01-01 07:28:53,212 INFO:127.0.0.1 - - [01/Jan/2025 07:28:53] "[35m[1mGET /api/registrations-pdf/REG-20241231222021-1da7ba54 HTTP/1.1[0m" 500 -
+2025-01-01 07:28:54,448 ERROR:Error generating PDF for registration REG-20241231222021-1da7ba54: name 'box_x' is not defined
+2025-01-01 07:28:54,450 INFO:127.0.0.1 - - [01/Jan/2025 07:28:54] "[35m[1mGET /api/registrations-pdf/REG-20241231222021-1da7ba54 HTTP/1.1[0m" 500 -
+2025-01-01 07:28:54,604 ERROR:Error generating PDF for registration REG-20241231222021-1da7ba54: name 'box_x' is not defined
+2025-01-01 07:28:54,607 INFO:127.0.0.1 - - [01/Jan/2025 07:28:54] "[35m[1mGET /api/registrations-pdf/REG-20241231222021-1da7ba54 HTTP/1.1[0m" 500 -
+2025-01-01 07:28:54,823 ERROR:Error generating PDF for registration REG-20241231222021-1da7ba54: name 'box_x' is not defined
+2025-01-01 07:28:54,828 INFO:127.0.0.1 - - [01/Jan/2025 07:28:54] "[35m[1mGET /api/registrations-pdf/REG-20241231222021-1da7ba54 HTTP/1.1[0m" 500 -
+2025-01-01 07:29:04,927 INFO: * Detected change in 'E:\\Navata\\NAPS\\napsbe\\app.py', reloading
+2025-01-01 07:29:05,119 INFO: * Restarting with stat
+2025-01-01 07:29:07,156 WARNING: * Debugger is active!
+2025-01-01 07:29:07,156 INFO: * Debugger PIN: 101-903-271
+2025-01-01 07:33:49,599 INFO: * Detected change in 'E:\\Navata\\NAPS\\napsbe\\app.py', reloading
+2025-01-01 07:33:49,808 INFO: * Restarting with stat
+2025-01-01 07:33:52,008 WARNING: * Debugger is active!
+2025-01-01 07:33:52,014 INFO: * Debugger PIN: 101-903-271
+2025-01-01 07:34:05,423 INFO:127.0.0.1 - - [01/Jan/2025 07:34:05] "GET /api/registrations-pdf/REG-20241231221444-a93d423c HTTP/1.1" 200 -
+2025-01-01 07:37:04,667 INFO: * Detected change in 'E:\\Navata\\NAPS\\napsbe\\app.py', reloading
+2025-01-01 07:37:04,914 INFO: * Restarting with stat
+2025-01-01 07:37:52,587 INFO:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-01-01 07:37:52,588 INFO:[33mPress CTRL+C to quit[0m
+2025-01-01 07:37:52,591 INFO: * Restarting with stat
+2025-01-01 07:37:54,628 WARNING: * Debugger is active!
+2025-01-01 07:37:54,635 INFO: * Debugger PIN: 101-903-271
+2025-01-01 07:38:26,336 INFO:127.0.0.1 - - [01/Jan/2025 07:38:26] "OPTIONS /admin/login HTTP/1.1" 200 -
+2025-01-01 07:38:26,537 INFO:127.0.0.1 - - [01/Jan/2025 07:38:26] "POST /admin/login HTTP/1.1" 200 -
+2025-01-01 07:38:26,580 INFO:127.0.0.1 - - [01/Jan/2025 07:38:26] "GET /api/registrations HTTP/1.1" 200 -
+2025-01-01 07:38:29,552 INFO:127.0.0.1 - - [01/Jan/2025 07:38:29] "GET /api/registrations-pdf/REG-20241229222118-3943ee36 HTTP/1.1" 200 -
+2025-01-01 07:39:31,459 INFO: * Detected change in 'E:\\Navata\\NAPS\\napsbe\\app.py', reloading
+2025-01-01 07:39:31,684 INFO: * Restarting with stat
+2025-01-01 07:39:34,099 WARNING: * Debugger is active!
+2025-01-01 07:39:34,099 INFO: * Debugger PIN: 101-903-271
+2025-01-01 07:39:39,437 INFO:127.0.0.1 - - [01/Jan/2025 07:39:39] "GET /api/registrations-pdf/REG-20241229221444-60c89692 HTTP/1.1" 200 -
+2025-01-01 07:39:50,261 INFO: * Detected change in 'E:\\Navata\\NAPS\\napsbe\\app.py', reloading
+2025-01-01 07:39:50,554 INFO: * Restarting with stat
+2025-01-01 07:39:52,580 WARNING: * Debugger is active!
+2025-01-01 07:39:52,581 INFO: * Debugger PIN: 101-903-271
+2025-01-01 07:39:53,606 INFO: * Detected change in 'E:\\Navata\\NAPS\\napsbe\\app.py', reloading
+2025-01-01 07:39:53,790 INFO: * Restarting with stat
+2025-01-01 07:39:55,822 WARNING: * Debugger is active!
+2025-01-01 07:39:55,822 INFO: * Debugger PIN: 101-903-271
+2025-01-01 07:40:07,009 INFO:127.0.0.1 - - [01/Jan/2025 07:40:07] "GET /api/registrations-pdf/REG-20241231221444-a93d423c HTTP/1.1" 200 -
+2025-01-01 07:40:37,249 INFO: * Detected change in 'E:\\Navata\\NAPS\\napsbe\\app.py', reloading
+2025-01-01 07:40:37,547 INFO: * Restarting with stat
+2025-01-01 07:40:39,610 WARNING: * Debugger is active!
+2025-01-01 07:40:39,610 INFO: * Debugger PIN: 101-903-271
+2025-01-01 09:35:13,355 INFO:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-01-01 09:35:13,355 INFO:[33mPress CTRL+C to quit[0m
+2025-01-01 09:35:13,366 INFO: * Restarting with stat
+2025-01-01 09:35:15,728 WARNING: * Debugger is active!
+2025-01-01 09:35:15,728 INFO: * Debugger PIN: 101-903-271
+2025-01-01 09:42:11,837 INFO: * Detected change in 'E:\\Navata\\NAPS\\napsbe\\app.py', reloading
+2025-01-01 09:42:12,151 INFO: * Restarting with stat
+2025-01-01 09:42:14,482 WARNING: * Debugger is active!
+2025-01-01 09:42:14,482 INFO: * Debugger PIN: 101-903-271
+2025-01-01 09:46:29,764 INFO:127.0.0.1 - - [01/Jan/2025 09:46:29] "OPTIONS /admin/login HTTP/1.1" 200 -
+2025-01-01 09:46:30,139 INFO:127.0.0.1 - - [01/Jan/2025 09:46:30] "POST /admin/login HTTP/1.1" 200 -
+2025-01-01 09:46:30,227 INFO:127.0.0.1 - - [01/Jan/2025 09:46:30] "GET /api/registrations HTTP/1.1" 200 -
+2025-01-01 09:49:44,645 INFO:127.0.0.1 - - [01/Jan/2025 09:49:44] "GET /enquiry HTTP/1.1" 200 -
+2025-01-01 09:58:35,521 INFO: * Detected change in 'E:\\Navata\\NAPS\\napsbe\\app.py', reloading
+2025-01-01 09:58:35,738 INFO: * Restarting with stat
+2025-01-01 09:58:40,177 WARNING: * Debugger is active!
+2025-01-01 09:58:40,177 INFO: * Debugger PIN: 101-903-271
+2025-01-01 11:34:44,239 INFO:127.0.0.1 - - [01/Jan/2025 11:34:44] "OPTIONS /enquiry HTTP/1.1" 200 -
+2025-01-01 11:34:44,285 INFO:127.0.0.1 - - [01/Jan/2025 11:34:44] "[35m[1mPOST /enquiry HTTP/1.1[0m" 201 -
+2025-01-01 11:37:22,806 INFO:127.0.0.1 - - [01/Jan/2025 11:37:22] "[31m[1mPOST /register HTTP/1.1[0m" 400 -
+2025-01-01 11:37:24,075 INFO:127.0.0.1 - - [01/Jan/2025 11:37:24] "[35m[1mPOST /register HTTP/1.1[0m" 201 -
+2025-01-01 11:39:15,850 INFO:127.0.0.1 - - [01/Jan/2025 11:39:15] "OPTIONS /admin/login HTTP/1.1" 200 -
+2025-01-01 11:39:16,168 INFO:127.0.0.1 - - [01/Jan/2025 11:39:16] "POST /admin/login HTTP/1.1" 200 -
+2025-01-01 11:39:16,203 INFO:127.0.0.1 - - [01/Jan/2025 11:39:16] "GET /api/registrations HTTP/1.1" 200 -
+2025-01-01 11:39:24,477 INFO:127.0.0.1 - - [01/Jan/2025 11:39:24] "GET /api/registrations-pdf/REG-20250101055216-865827c7 HTTP/1.1" 200 -
+2025-01-01 11:39:40,607 INFO:127.0.0.1 - - [01/Jan/2025 11:39:40] "GET /enquiry HTTP/1.1" 200 -
+2025-01-01 11:39:45,822 INFO:127.0.0.1 - - [01/Jan/2025 11:39:45] "GET /enquiry/6 HTTP/1.1" 200 -
+2025-01-01 11:39:53,705 INFO:127.0.0.1 - - [01/Jan/2025 11:39:53] "GET /api/registrations HTTP/1.1" 200 -
+2025-01-01 11:40:04,742 INFO:127.0.0.1 - - [01/Jan/2025 11:40:04] "GET /api/registrations-excel HTTP/1.1" 200 -
+2025-01-01 11:59:05,805 INFO:127.0.0.1 - - [01/Jan/2025 11:59:05] "GET /enquiry HTTP/1.1" 200 -
+2025-01-01 11:59:49,926 INFO:127.0.0.1 - - [01/Jan/2025 11:59:49] "OPTIONS /enquiry HTTP/1.1" 200 -
+2025-01-01 11:59:49,959 INFO:127.0.0.1 - - [01/Jan/2025 11:59:49] "[35m[1mPOST /enquiry HTTP/1.1[0m" 201 -
+2025-01-01 12:00:01,433 INFO:127.0.0.1 - - [01/Jan/2025 12:00:01] "GET /api/registrations HTTP/1.1" 200 -
+2025-01-01 12:00:02,713 INFO:127.0.0.1 - - [01/Jan/2025 12:00:02] "GET /enquiry HTTP/1.1" 200 -
+2025-01-01 12:02:30,041 INFO: * Detected change in 'E:\\Navata\\NAPS\\napsbe\\app.py', reloading
+2025-01-01 12:02:30,292 INFO: * Restarting with stat
+2025-01-01 12:02:33,899 WARNING: * Debugger is active!
+2025-01-01 12:02:33,906 INFO: * Debugger PIN: 101-903-271
+2025-01-01 12:03:09,409 INFO: * Detected change in 'E:\\Navata\\NAPS\\napsbe\\app.py', reloading
+2025-01-01 12:03:09,779 INFO: * Restarting with stat
+2025-01-01 12:03:12,379 WARNING: * Debugger is active!
+2025-01-01 12:03:12,379 INFO: * Debugger PIN: 101-903-271
+2025-01-01 12:03:14,415 INFO: * Detected change in 'E:\\Navata\\NAPS\\napsbe\\app.py', reloading
+2025-01-01 12:03:14,615 INFO: * Restarting with stat
+2025-01-01 12:03:17,455 WARNING: * Debugger is active!
+2025-01-01 12:03:17,459 INFO: * Debugger PIN: 101-903-271
+2025-01-01 12:03:19,500 INFO: * Detected change in 'E:\\Navata\\NAPS\\napsbe\\app.py', reloading
+2025-01-01 12:03:19,772 INFO: * Restarting with stat
+2025-01-01 12:06:59,756 INFO:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-01-01 12:06:59,756 INFO:[33mPress CTRL+C to quit[0m
+2025-01-01 12:06:59,759 INFO: * Restarting with stat
+2025-01-01 12:07:02,512 WARNING: * Debugger is active!
+2025-01-01 12:07:02,515 INFO: * Debugger PIN: 101-903-271
+2025-01-01 12:07:04,377 INFO:127.0.0.1 - - [01/Jan/2025 12:07:04] "GET /api/registration-files HTTP/1.1" 200 -
+2025-01-01 12:07:11,759 INFO:127.0.0.1 - - [01/Jan/2025 12:07:11] "GET /api/registration-file/REG-20250101055216-865827c7 HTTP/1.1" 200 -
+2025-01-01 12:07:19,892 INFO:127.0.0.1 - - [01/Jan/2025 12:07:19] "GET /enquiry HTTP/1.1" 200 -
+2025-01-01 12:07:21,192 INFO:127.0.0.1 - - [01/Jan/2025 12:07:21] "GET /api/registration-files HTTP/1.1" 200 -
+2025-01-01 12:07:27,688 INFO:127.0.0.1 - - [01/Jan/2025 12:07:27] "GET /api/registration-file/REG-20250101055216-865827c7 HTTP/1.1" 200 -
+2025-01-01 12:07:38,658 INFO:127.0.0.1 - - [01/Jan/2025 12:07:38] "GET /api/registration-files HTTP/1.1" 200 -
+2025-01-01 12:12:43,960 INFO:127.0.0.1 - - [01/Jan/2025 12:12:43] "GET /api/registration-files HTTP/1.1" 200 -
+2025-01-01 12:12:43,979 INFO:127.0.0.1 - - [01/Jan/2025 12:12:43] "GET /api/registration-files HTTP/1.1" 200 -
+2025-01-01 12:12:44,536 INFO:127.0.0.1 - - [01/Jan/2025 12:12:44] "GET /api/registration-files HTTP/1.1" 200 -
+2025-01-01 12:12:51,684 INFO:127.0.0.1 - - [01/Jan/2025 12:12:51] "GET /api/registration-file/REG-20250101055216-865827c7 HTTP/1.1" 200 -
+2025-01-01 12:12:53,595 INFO:127.0.0.1 - - [01/Jan/2025 12:12:53] "GET /uploads/udit_yadav_cover_letter.pdf HTTP/1.1" 200 -
+2025-01-01 12:12:53,778 INFO:127.0.0.1 - - [01/Jan/2025 12:12:53] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-01-01 12:13:05,919 INFO:127.0.0.1 - - [01/Jan/2025 12:13:05] "GET /api/registration-file/REG-20241231221444-a93d423c HTTP/1.1" 200 -
+2025-01-01 12:13:13,241 INFO:127.0.0.1 - - [01/Jan/2025 12:13:13] "[36mGET /uploads/udit_yadav_cover_letter.pdf HTTP/1.1[0m" 304 -
+2025-01-01 12:13:38,190 INFO:127.0.0.1 - - [01/Jan/2025 12:13:38] "GET /api/registration-file/REG-20241229101814-42b08082 HTTP/1.1" 200 -
+2025-01-01 12:13:40,027 INFO:127.0.0.1 - - [01/Jan/2025 12:13:40] "GET /uploads/napscon_2025.jpg HTTP/1.1" 200 -
+2025-01-01 12:14:03,894 INFO:127.0.0.1 - - [01/Jan/2025 12:14:03] "GET /api/registration-files HTTP/1.1" 200 -
+2025-01-01 12:14:03,909 INFO:127.0.0.1 - - [01/Jan/2025 12:14:03] "GET /api/registration-files HTTP/1.1" 200 -
+2025-01-01 12:14:03,925 INFO:127.0.0.1 - - [01/Jan/2025 12:14:03] "GET /api/registration-files HTTP/1.1" 200 -
+2025-01-01 12:14:24,537 INFO:127.0.0.1 - - [01/Jan/2025 12:14:24] "GET /api/registrations HTTP/1.1" 200 -
+2025-01-01 12:14:25,660 INFO:127.0.0.1 - - [01/Jan/2025 12:14:25] "GET /enquiry HTTP/1.1" 200 -
+2025-01-01 12:16:52,381 INFO:127.0.0.1 - - [01/Jan/2025 12:16:52] "OPTIONS /enquiry HTTP/1.1" 200 -
+2025-01-01 12:16:52,411 INFO:127.0.0.1 - - [01/Jan/2025 12:16:52] "[35m[1mPOST /enquiry HTTP/1.1[0m" 201 -
+2025-01-01 12:16:59,345 INFO:127.0.0.1 - - [01/Jan/2025 12:16:59] "GET /enquiry HTTP/1.1" 200 -
+2025-01-01 12:17:02,324 INFO:127.0.0.1 - - [01/Jan/2025 12:17:02] "GET /enquiry/8 HTTP/1.1" 200 -
+2025-01-01 12:20:27,015 INFO:127.0.0.1 - - [01/Jan/2025 12:20:27] "[31m[1mPOST /register HTTP/1.1[0m" 400 -
+2025-01-01 12:20:27,264 INFO:127.0.0.1 - - [01/Jan/2025 12:20:27] "[35m[1mPOST /register HTTP/1.1[0m" 201 -
+2025-01-01 12:21:15,417 INFO:127.0.0.1 - - [01/Jan/2025 12:21:15] "GET /api/registrations HTTP/1.1" 200 -
+2025-01-01 12:21:21,343 INFO:127.0.0.1 - - [01/Jan/2025 12:21:21] "GET /api/registrations-excel HTTP/1.1" 200 -
+2025-01-01 12:22:20,342 INFO:127.0.0.1 - - [01/Jan/2025 12:22:20] "GET /api/registrations-pdf/REG-20250101063519-588f1f9a HTTP/1.1" 200 -
+2025-01-01 12:23:13,545 INFO:127.0.0.1 - - [01/Jan/2025 12:23:13] "GET /api/registration-files HTTP/1.1" 200 -
+2025-01-01 12:23:28,679 INFO:127.0.0.1 - - [01/Jan/2025 12:23:28] "GET /api/registration-file/REG-20250101063519-588f1f9a HTTP/1.1" 200 -
+2025-01-01 12:23:31,375 INFO:127.0.0.1 - - [01/Jan/2025 12:23:31] "GET /uploads/udit_yadav_cover_letter.pdf HTTP/1.1" 200 -
+2025-01-01 12:23:51,659 INFO:127.0.0.1 - - [01/Jan/2025 12:23:51] "GET /api/registration-files HTTP/1.1" 200 -
+2025-01-01 12:39:58,445 INFO: * Detected change in 'E:\\Navata\\NAPS\\napsbe\\app.py', reloading
+2025-01-01 12:39:58,678 INFO: * Restarting with stat
+2025-01-01 12:40:01,424 WARNING: * Debugger is active!
+2025-01-01 12:40:01,437 INFO: * Debugger PIN: 101-903-271
+2025-01-01 12:40:24,666 INFO: * Detected change in 'E:\\Navata\\NAPS\\napsbe\\app.py', reloading
+2025-01-01 12:40:24,914 INFO: * Restarting with stat
+2025-01-01 12:40:28,131 WARNING: * Debugger is active!
+2025-01-01 12:40:28,136 INFO: * Debugger PIN: 101-903-271

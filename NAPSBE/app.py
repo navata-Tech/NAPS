@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta, timezone
 from functools import wraps
 import openpyxl
+from flask import send_from_directory
 from io import BytesIO
 from reportlab.pdfbase import pdfmetrics
 import os
@@ -75,9 +76,9 @@ def admin_required(fn):
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USE_SSL'] = True
-app.config['MAIL_USERNAME'] = 'udityadav528@gmail.com'  # Your email address
-app.config['MAIL_PASSWORD'] = 'qgao ogov fllo zqfm'  # Your email password (or app-specific password)
-app.config['MAIL_DEFAULT_SENDER'] = 'udityadav528@gmail.com'
+app.config['MAIL_USERNAME'] = 'Pedsurg.nepal@gmail.com'  # Your email address
+app.config['MAIL_PASSWORD'] = 'whoh ktsl uchc ldnh'  # Your email password (or app-specific password)
+app.config['MAIL_DEFAULT_SENDER'] = 'Pedsurg.nepal@gmail.com'
 
 mail = Mail(app)
 
@@ -359,6 +360,77 @@ def create_registration():
         db.session.rollback()
         logging.error(f"Error creating registration: {e}")
         return jsonify({'message': 'Error creating registration', 'error': str(e)}), 500
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+    """
+    Serve files from the 'uploads' folder
+    """
+    try:
+        # Send the requested file from the UPLOAD_FOLDER
+        return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+    except Exception as e:
+        # If an error occurs (e.g., file not found), return an error message
+        return jsonify({'message': 'File not found', 'error': str(e)}), 404
+
+@app.route('/api/registration-files', methods=['GET'])
+def list_all_registration_files():
+    try:
+        # Query all registrations that have uploaded files
+        registrations = Registration.query.filter(Registration.file_name.isnot(None)).all()
+
+        # If no registrations with files exist
+        if not registrations:
+            return jsonify({'message': 'No files uploaded yet'}), 404
+
+        # Prepare the list of registration details with files
+        files_data = []
+        for registration in registrations:
+            files_data.append({
+                'registration_number': registration.registration_number,
+                'name': registration.full_name,
+                'total_amount': registration.total_amount,
+                'file_name': registration.file_name,
+                'file_url': f'/uploads/{registration.file_name}'
+            })
+
+        return jsonify(files_data)
+
+    except Exception as e:
+        logging.error(f"Error listing uploaded files: {e}")
+        return jsonify({'message': 'Error fetching file list', 'error': str(e)}), 500
+
+@app.route('/api/registration-file/<registration_number>', methods=['GET'])
+def get_registration_file(registration_number):
+    try:
+        # Query the registration based on the provided registration number
+        registration = Registration.query.filter_by(registration_number=registration_number).first()
+
+        if not registration:
+            return jsonify({'message': 'Registration not found'}), 404
+
+        # Check if the file exists
+        if not registration.file_name:
+            return jsonify({'message': 'No file uploaded for this registration'}), 404
+
+        # Build the file path
+        file_path = os.path.join(app.config['UPLOAD_FOLDER'], registration.file_name)
+
+        # Check if the file exists in the specified directory
+        if not os.path.exists(file_path):
+            return jsonify({'message': 'File not found on server'}), 404
+
+        # Return the file along with additional registration details
+        return jsonify({
+            'registration_number': registration.registration_number,
+            'name': registration.full_name,
+            'total_amount': registration.total_amount,
+            'file_name': registration.file_name,
+            'file_url': f'/uploads/{registration.file_name}'  # Assuming you're serving the file from '/uploads' folder
+        })
+
+    except Exception as e:
+        logging.error(f"Error fetching file for registration {registration_number}: {e}")
+        return jsonify({'message': 'Error fetching file', 'error': str(e)}), 500
 
 
 # GET method to fetch a single registration by ID
@@ -473,7 +545,27 @@ def generate_registration_pdf_by_form(registration_number):
         buffer = BytesIO()
         pdf = canvas.Canvas(buffer, pagesize=letter)
 
-        # Header Section
+        # Function to check and add new page
+        def check_page_full(y_position):
+            if y_position < 50:  # Avoid writing below footer
+                pdf.showPage()
+                # Draw header again on new page
+                pdf.drawImage("./assest/logo.png", 40, 725, width=50, height=50)  # Logo
+                pdf.setFont("Helvetica-Bold", 16)
+                pdf.setFillColorRGB(251/255, 175/255, 22/255)  # Color for the text
+                pdf.drawString(100, 760, "Nepalese Association of Pediatric Surgeons")
+                pdf.setFont("Helvetica", 10)
+                pdf.setFillColorRGB(0, 0, 0)  # Black for contact details
+                pdf.drawString(100, 745, "Mail: pedsurg.nepal@gmail.com")
+                pdf.drawString(100, 730, "Phone: 01-4411550")
+                # Horizontal line above Registration Details
+                pdf.setFillColorRGB(160/255, 31/255, 98/255)  # Background color for the line
+                pdf.rect(50, 715, 500, 2, stroke=0, fill=1)  # Rectangle as a horizontal line
+                # Set y_position to a new starting value
+                y_position = 700
+            return y_position
+
+        # Header Section (Same as before)
         pdf.drawImage("./assest/logo.png", 40, 725, width=50, height=50)  # Logo
         pdf.setFont("Helvetica-Bold", 16)
         pdf.setFillColorRGB(251/255, 175/255, 22/255)  # Color for the text
@@ -522,38 +614,31 @@ def generate_registration_pdf_by_form(registration_number):
             ("Agreement", "Agreed" if registration.agree else "Not Agreed"),
         ]
 
-        # Iterate and display fields in the PDF with labels and boxes
+        # Set x-coordinates for consistent alignment
+        label_x = 50
+        value_x = 150  # Slightly shifted from the label for the value
+        max_line_width = 350  # Maximum width for the text value (to ensure wrapping)
+
+        # Iterate and display fields in the PDF with labels and values
         for field_name, field_value in registration_fields:
             if not field_value:  # Skip empty fields
                 continue
             
             # Draw label in black color, with a consistent x-coordinate
-            label_x = 50
-            box_x = 150  # Align the boxes right after the labels
             pdf.setFont("Helvetica-Bold", 12)
             pdf.setFillColorRGB(0, 0, 0)  # Black for labels
             pdf.drawString(label_x, y, f"{field_name}:")
-            y -= 15
+            y -= 15  # Move down for the value
 
-            # Draw the box with the border color #a01f62 and align with label
-            pdf.setFillColorRGB(1, 1, 1)  # Fill color inside box (white)
-            pdf.setStrokeColorRGB(160/255, 31/255, 98/255)  # Box border color #a01f62
-            pdf.rect(box_x, y, 350, 15, fill=1, stroke=1)  # Box for value
-
-            # Draw value inside the box
-            pdf.setFillColorRGB(0, 0, 0)  # Text color inside the box (black)
+            # Now just draw the value below the label, aligned with label
             pdf.setFont("Helvetica", 10)
-            text_lines = wrap_text(str(field_value), 340, "Helvetica", 10)
+            text_lines = wrap_text(str(field_value), max_line_width, "Helvetica", 10)
             for line in text_lines:
-                pdf.drawString(box_x + 5, y + 2, line)
-                y -= 15
+                pdf.drawString(value_x, y, line)  # Align text with the label
+                y -= 15  # Move down after drawing each line of the text
 
-            # Adjust the space between fields for better line spacing
-            if y < 50:  # Avoid writing below footer
-                pdf.showPage()
-                pdf.setFont("Helvetica", 10)
-                y = 750
-
+            # Check if the page is full and start a new page if necessary
+            y = check_page_full(y)
         # Spouse Details Section (if any)
         if registration.spouse:
             pdf.setFont("Helvetica-Bold", 12)
@@ -623,7 +708,7 @@ def generate_registration_pdf_by_form(registration_number):
         pdf.save()
 
         buffer.seek(0)
-        return send_file(buffer, as_attachment=True, download_name=f"{registration_number}_registration.pdf")
+        return send_file(buffer, as_attachment=False, download_name=f"{registration_number}_registration.pdf")
 
     except Exception as e:
         app.logger.error(f"Error generating PDF for registration {registration_number}: {str(e)}")
@@ -709,7 +794,6 @@ def get_enquiry(id):
     except Exception as e:
         print(f"Error: {e}")
         return jsonify({'message': 'There was an error retrieving the enquiry details. Please try again later.'}), 500
-
 
 if __name__ == '__main__':
     with app.app_context():
