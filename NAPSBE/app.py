@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta, timezone
+from sqlalchemy import func
 from functools import wraps
 import openpyxl
 from flask import send_from_directory
@@ -9,7 +10,9 @@ from click import wrap_text
 from flask_mail import Mail, Message
 from sqlalchemy.sql import text  # Correct SQLAlchemy import for text()
 # Remove or avoid importing `from pydoc import text` if not necessary
-from flask import Flask, jsonify, request, send_file
+from flask import Flask, jsonify, request,send_file
+from flask import make_response
+from flask import Response
 from flask_cors import CORS
 from flasgger import Swagger
 from flask_marshmallow import Marshmallow
@@ -28,9 +31,10 @@ from reportlab.pdfbase import pdfmetrics
 
 
 
+
 # Initialize Flask app
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 api = Api(app, version='1.0', title='NAPS API', description='API for managing NAPS')
 swagger = Swagger(app)
 
@@ -38,7 +42,10 @@ app.config['UPLOAD_FOLDER'] = 'uploads/'
 if not os.path.exists(app.config['UPLOAD_FOLDER']):
     os.makedirs(app.config['UPLOAD_FOLDER'])
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:@localhost/naps'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:@localhost/naps'
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://napsorg_admin:%40Naps%40321%40@localhost/napsorg_naps'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 
@@ -71,6 +78,21 @@ def admin_required(fn):
         except Exception as e:
             return jsonify({'message': 'Unauthorized access', 'error': str(e)}), 401
     return wrapper
+    
+# Handle CORS Preflight Requests
+@app.before_request
+def handle_options_request():
+    if request.method == 'OPTIONS':
+        # Handle the preflight request
+        response = jsonify({'message': 'CORS preflight successful'})
+        response.headers.add("Access-Control-Allow-Origin", "*")
+        response.headers.add("Access-Control-Allow-Methods", "DELETE, POST, GET, PUT, OPTIONS")
+        response.headers.add("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With")
+        response.status_code = 200
+        return response
+    
+
+
 
 # Configuring the mail settings
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
@@ -151,74 +173,59 @@ admin_model = api.model('Admin', {
     'password': fields.String(required=True, description='Admin password')
 })
 
-# Handle CORS Preflight Requests
-@app.before_request
-def handle_options_request():
-    if request.method == 'OPTIONS':
-        # Handle the preflight request
-        response = jsonify({'message': 'CORS preflight successful'})
-        response.headers.add("Access-Control-Allow-Origin", "*")
-        response.headers.add("Access-Control-Allow-Methods", "DELETE, POST, GET, PUT, OPTIONS")
-        response.headers.add("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With")
-        response.status_code = 200
-        return response
 
-# Middleware (decorator) to enforce authorization
-def admin_required(fn):
-    @wraps(fn)
-    def wrapper(*args, **kwargs):
-        try:
-            verify_jwt_in_request()  # This will raise an error if no JWT is present or invalid
-            return fn(*args, **kwargs)
-        except Exception as e:
-            return jsonify({'message': 'Unauthorized access', 'error': str(e)}), 401
-    return wrapper
+
 
 @app.route('/create-admin', methods=['POST'])
 def create_admin():
-    data = request.json
+    default_admin = {
+        'username': 'admin',
+        'email': 'Pedsurg.nepal@gmail.com',
+        'password': '@Naps@321'
+    }
+
     try:
-        # Check if the admin already exists using SQLAlchemy
-        existing_admin = db.session.execute(text("SELECT * FROM admins WHERE email = :email"), {'email': data['email']}).fetchone()
+        existing_admin = db.session.execute(text("SELECT * FROM admins WHERE email = :email"), {'email': default_admin['email']}).fetchone()
         if existing_admin:
             return {'message': 'Admin with this email already exists'}, 400
 
-        hashed_password = generate_password_hash(data['password'])
-        # Insert new admin using SQLAlchemy
+        hashed_password = generate_password_hash(default_admin['password'])
+        print(f"Hashed Password: {hashed_password}")  # Debugging output
+        
         db.session.execute(
             text("""INSERT INTO admins (username, email, password) VALUES (:username, :email, :password)"""),
-            {'username': data['username'], 'email': data['email'], 'password': hashed_password}
+            {'username': default_admin['username'], 'email': default_admin['email'], 'password': hashed_password}
         )
         db.session.commit()  # Commit the transaction
         return {'message': 'Admin created successfully'}, 201
     except Exception as e:
-        db.session.rollback()  # Roll back the session in case of error
+        db.session.rollback()
         logging.error(f'Error creating admin: {e}')
         return {'message': f'Error: {e}'}, 500
+
         
 @app.route('/admin/login', methods=['POST', 'OPTIONS'])
 def admin_login():
     if request.method == 'OPTIONS':
-        # CORS preflight handling
         response = jsonify({"message": "CORS preflight successful"})
-        response.headers.add("Access-Control-Allow-Origin", "http://localhost:5174")
+        response.headers.add("Access-Control-Allow-Origin", request.headers.get("Origin"))
         response.headers.add("Access-Control-Allow-Methods", "POST, OPTIONS")
         response.headers.add("Access-Control-Allow-Headers", "Content-Type")
+        response.headers.add("Access-Control-Allow-Credentials", "true")
         return response, 200
     
     data = request.json
     try:
         admin = db.session.execute(text("SELECT * FROM admins WHERE email = :email"), {'email': data['email']}).fetchone()
-        if admin and check_password_hash(admin[3], data['password']):
+        if admin and check_password_hash(admin[3], data['password']):  # Ensure admin[3] is correct column for password hash
             access_token = create_access_token(identity=admin[0])
-            return jsonify({'message': 'Login successful', 'access_token': access_token}), 200
+            response = jsonify({'message': 'Login successful', 'access_token': access_token})
+            response.headers.add("Access-Control-Allow-Origin", request.headers.get("Origin"))
+            return response, 200
         return jsonify({'message': 'Invalid email or password'}), 401
     except Exception as e:
         logging.error(f'Error during admin login: {e}')
-        # Ensure the error response is JSON
         return jsonify({'message': 'Internal server error'}), 500
-
-
 
 @admin_ns.route('/logout')
 class AdminLogout(Resource):
@@ -240,8 +247,10 @@ class ProtectedAdmin(Resource):
         current_admin_id = get_jwt_identity()  # Get the ID of the logged-in admin
         return {'message': f'Welcome admin {current_admin_id}!'}
     
-@app.route('/register', methods=['POST'])
+@app.route('/register', methods=['POST', 'OPTIONS'])
 def create_registration():
+    if request.method == 'OPTIONS':
+        return jsonify({'message': 'Preflight check successful'}), 200
     try:
         # Handle file upload
         if 'file' in request.files:
@@ -260,10 +269,16 @@ def create_registration():
         logging.info(f"Received form data: {data}")
 
 
-        # Check if email already exists
-        existing_registration = Registration.query.filter_by(email=data.get('email')).first()
+        # Check if email already exists (case-insensitive)
+        existing_registration = Registration.query.filter(
+            func.lower(Registration.email) == func.lower(data.get('email'))
+        ).first()
+        
         if existing_registration:
+            logging.info(f"Existing registration found for email: {data.get('email')}")
             return jsonify({'message': 'Error', 'error': 'Email already exists'}), 400
+        
+
 
         # Safely extract registration fee and total amount
         try:
@@ -317,6 +332,8 @@ def create_registration():
         # Save the new registration in the database
         db.session.add(new_registration)
         db.session.commit()
+        db.session.flush()  # Ensure the record is visible immediately
+
 
 
         # Send confirmation email to the user
@@ -355,11 +372,11 @@ def create_registration():
             'registration_number': registration_number,
             'id': new_registration.id
         }), 201
-
     except Exception as e:
-        db.session.rollback()
-        logging.error(f"Error creating registration: {e}")
-        return jsonify({'message': 'Error creating registration', 'error': str(e)}), 500
+        app.logger.error(f"Error registering user: {e}")
+        return jsonify({"error": "Internal Server Error"}), 500
+        
+
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
     """
@@ -440,7 +457,7 @@ def get_registration_by_id(id):
     if not registration:
         return jsonify({'message': 'Registration not found'}), 404
     return jsonify({key: value for key, value in registration.__dict__.items() if key != '_sa_instance_state'}), 200
-
+    
 @app.route('/api/registrations', methods=['GET'])
 def get_all_registrations():
     try:
@@ -458,9 +475,6 @@ def get_all_registrations():
     except Exception as e:
         app.logger.error(f"Error fetching registrations: {str(e)}")
         return jsonify({'error': 'Error fetching registrations', 'message': str(e)}), 500
-    
-
-
 
 @app.route('/api/registrations-excel', methods=['GET'])
 def export_registrations_to_excel():
@@ -501,13 +515,15 @@ def export_registrations_to_excel():
         wb.save(output)
         output.seek(0)
 
-        # Send the file to the client for download
-        return send_file(output, as_attachment=True, download_name="registrations.xlsx", mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+        # Wrap in a Response object to make Flask handle it like a file
+        response = Response(output.getvalue(), mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+        response.headers['Content-Disposition'] = 'attachment; filename=registrations.xlsx'
+
+        return response
 
     except Exception as e:
         app.logger.error(f"Error exporting registrations to Excel: {str(e)}")
         return jsonify({'error': 'Error exporting registrations', 'message': str(e)}), 500
-
     
 def wrap_text(text, width, font_name, font_size):
     """
@@ -534,14 +550,12 @@ def generate_registration_pdf_by_form(registration_number):
         if not registration_number:
             return jsonify({'error': 'Missing registration number'}), 400
 
-        # Retrieve registration details from the database
         registration = Registration.query.filter_by(registration_number=registration_number).first()
 
         if not registration:
             app.logger.error(f'Registration not found for number: {registration_number}')
             return jsonify({'error': 'Registration not found'}), 404
 
-        # Create PDF using the registration data
         buffer = BytesIO()
         pdf = canvas.Canvas(buffer, pagesize=letter)
 
@@ -707,8 +721,13 @@ def generate_registration_pdf_by_form(registration_number):
         pdf.showPage()
         pdf.save()
 
+        # Get the buffer contents
         buffer.seek(0)
-        return send_file(buffer, as_attachment=False, download_name=f"{registration_number}_registration.pdf")
+        pdf_data = buffer.read()
+
+        # Return the file as a response
+        return Response(pdf_data, content_type="application/pdf", 
+                        headers={"Content-Disposition": f"attachment; filename={registration_number}_registration.pdf"})
 
     except Exception as e:
         app.logger.error(f"Error generating PDF for registration {registration_number}: {str(e)}")
@@ -736,11 +755,17 @@ def submit_enquiry():
         db.session.add(new_enquiry)
         db.session.commit()
 
-        return jsonify({'message': 'Thank you for your enquiry. We will notify you via email soon!'}), 201
+        response = jsonify({'message': 'Thank you for your enquiry. We will notify you via email soon!'})
+        response.headers.add("Access-Control-Allow-Origin", "https://naps.org.np")
+        return response, 201
 
     except Exception as e:
-        db.session.rollback()  # Roll back the session in case of error
-        return jsonify({'message': 'There was an error submitting your enquiry. Please try again later.'}), 500
+        db.session.rollback()
+        print(f"Error: {e}")  # Log the error for debugging
+        response = jsonify({'message': 'There was an error submitting your enquiry. Please try again later.'})
+        response.headers.add("Access-Control-Allow-Origin", "https://naps.org.np")
+        return response, 500
+
 
 @app.route('/enquiry', methods=['GET'])
 def get_enquiries():
@@ -794,9 +819,16 @@ def get_enquiry(id):
     except Exception as e:
         print(f"Error: {e}")
         return jsonify({'message': 'There was an error retrieving the enquiry details. Please try again later.'}), 500
+        
+def create_tables():
+    try:
+        with app.app_context():
+            db.create_all()  # This will create tables for all models defined in the app
+            print("Tables created successfully.")
+    except Exception as e:
+        print(f"Error creating tables: {str(e)}")
 
 if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()  # This will create tables for all models defined in the app (including Registration)
+    create_tables()  # Ensure this function is called before app.run()
     app.run(debug=True)
 

@@ -12,7 +12,7 @@ const ViewRegistration = () => {
     useEffect(() => {
         const fetchRegistrations = async () => {
             try {
-                const response = await axios.get('http://127.0.0.1:5000/api/registrations');
+                const response = await axios.get(`${import.meta.env.VITE_SERVERAPI}/api/registrations`);
                 setRegistrations(response.data); // Assuming the response data is an array of registrations
             } catch (error) {
                 console.error('Error fetching registrations:', error.response?.data || error.message);
@@ -25,7 +25,7 @@ const ViewRegistration = () => {
     const handleExportExcel = async () => {
         try {
             // Request the server to export the registrations to Excel
-            const response = await axios.get('http://127.0.0.1:5000/api/registrations-excel', {
+            const response = await axios.get(`${import.meta.env.VITE_SERVERAPI}/api/registrations-excel`, {
                 responseType: 'blob',
             });
     
@@ -59,7 +59,7 @@ const ViewRegistration = () => {
     const viewPdf = async (registrationNumber) => {
         try {
             // Fetch the registration PDF
-            const response = await axios.get(`http://127.0.0.1:5000/api/registrations-pdf/${registrationNumber}`, {
+            const response = await axios.get(`${import.meta.env.VITE_SERVERAPI}/api/registrations-pdf/${registrationNumber}`, {
                 responseType: 'blob',
             });
 

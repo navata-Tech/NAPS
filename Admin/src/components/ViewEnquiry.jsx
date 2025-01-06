@@ -12,7 +12,7 @@ const ViewEnquiry = () => {
   useEffect(() => {
     const fetchEnquiries = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:5000/enquiry');
+        const response = await fetch(`${import.meta.env.VITE_SERVERAPI}/enquiry`);
         if (!response.ok) {
           throw new Error('Failed to fetch enquiries');
         }
@@ -39,7 +39,7 @@ const ViewEnquiry = () => {
 
   const handleViewEnquiry = async (id) => {
     try {
-      const response = await fetch(`http://127.0.0.1:5000/enquiry/${id}`);
+      const response = await fetch(`${import.meta.env.VITE_SERVERAPI}/enquiry/${id}`);
       if (!response.ok) {
         throw new Error('Failed to fetch enquiry details');
       }

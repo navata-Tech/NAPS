@@ -24,7 +24,7 @@ const LogIn = ({ setIsAuthenticated }) => {
     setError('');
   
     try {
-      const response = await fetch(`http://127.0.0.1:5000/admin/login`, {  // Direct localhost URL
+      const response = await fetch(`${import.meta.env.VITE_SERVERAPI}/admin/login`, {  // Direct localhost URL
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

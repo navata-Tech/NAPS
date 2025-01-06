@@ -6,7 +6,7 @@ import AdminProtectedRoute from './components/AdminProtectedRoutes';
 import { isAdminAuthenticated, logoutAdmin } from './utility/auth';
 import Sidebar from './components/Sidebar'; 
 import ViewRegistration from './components/ViewRegistration';
-import LogIn from './Pages/LogIn';
+import LogIn from "./Pages/Login";
 import ViewEnquiry from "./components/ViewEnquiry";
 import ViewVouchers from "./components/ViewVouchers";
 

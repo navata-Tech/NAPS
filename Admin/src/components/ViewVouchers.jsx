@@ -11,7 +11,7 @@ const ViewVouchers = () => {
   useEffect(() => {
     const fetchVouchers = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:5000/api/registration-files"); // Adjust API endpoint
+        const response = await fetch(`${import.meta.env.VITE_SERVERAPI}/api/registration-files`); // Adjust API endpoint
         if (!response.ok) {
           throw new Error("Failed to fetch vouchers");
         }
@@ -39,7 +39,7 @@ const ViewVouchers = () => {
   const handleViewVoucher = async (registrationNumber) => {
     try {
       const response = await fetch(
-        `http://127.0.0.1:5000/api/registration-file/${registrationNumber}`
+        `${import.meta.env.VITE_SERVERAPI}/api/registration-file/${registrationNumber}`
       ); // Adjust API endpoint
       if (!response.ok) {
         throw new Error("Failed to fetch voucher details");
@@ -59,7 +59,7 @@ const ViewVouchers = () => {
             <p><strong>Name:</strong> ${data.name}</p>
             <p><strong>Total Amount:</strong> ${data.total_amount}</p>
             <!-- Changed: Updated the file URL to point directly to the backend endpoint for serving files -->
-            <p><strong>File:</strong> <a href="http://127.0.0.1:5000/uploads/${data.file_name}" target="_blank" rel="noopener noreferrer">Download File</a></p>
+            <p><strong>File:</strong> <a href="${import.meta.env.VITE_SERVERAPI}/uploads/${data.file_name}" target="_blank" rel="noopener noreferrer">Download File</a></p>
           </body>
         </html>
       `);

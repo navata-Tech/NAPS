@@ -1570,3 +1570,137 @@
 2025-01-01 12:40:24,914 INFO: * Restarting with stat
 2025-01-01 12:40:28,131 WARNING: * Debugger is active!
 2025-01-01 12:40:28,136 INFO: * Debugger PIN: 101-903-271
+2025-01-01 12:41:06,752 INFO:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-01-01 12:41:06,752 INFO:[33mPress CTRL+C to quit[0m
+2025-01-01 12:41:06,761 INFO: * Restarting with stat
+2025-01-01 12:41:09,763 WARNING: * Debugger is active!
+2025-01-01 12:41:09,769 INFO: * Debugger PIN: 101-903-271
+2025-01-01 12:42:56,567 INFO:127.0.0.1 - - [01/Jan/2025 12:42:56] "OPTIONS /enquiry HTTP/1.1" 200 -
+2025-01-01 12:42:56,599 INFO:127.0.0.1 - - [01/Jan/2025 12:42:56] "[35m[1mPOST /enquiry HTTP/1.1[0m" 201 -
+2025-01-01 12:43:15,734 INFO:127.0.0.1 - - [01/Jan/2025 12:43:15] "OPTIONS /admin/login HTTP/1.1" 200 -
+2025-01-01 12:43:16,028 INFO:127.0.0.1 - - [01/Jan/2025 12:43:16] "POST /admin/login HTTP/1.1" 200 -
+2025-01-01 12:43:16,153 INFO:127.0.0.1 - - [01/Jan/2025 12:43:16] "GET /api/registrations HTTP/1.1" 200 -
+2025-01-01 12:43:18,334 INFO:127.0.0.1 - - [01/Jan/2025 12:43:18] "GET /enquiry HTTP/1.1" 200 -
+2025-01-01 12:43:26,708 INFO:127.0.0.1 - - [01/Jan/2025 12:43:26] "GET /enquiry/9 HTTP/1.1" 200 -
+2025-01-01 12:46:26,104 INFO:127.0.0.1 - - [01/Jan/2025 12:46:26] "[31m[1mPOST /register HTTP/1.1[0m" 400 -
+2025-01-01 12:46:29,767 INFO:127.0.0.1 - - [01/Jan/2025 12:46:29] "[31m[1mPOST /register HTTP/1.1[0m" 400 -
+2025-01-01 12:46:30,339 INFO:127.0.0.1 - - [01/Jan/2025 12:46:30] "[35m[1mPOST /register HTTP/1.1[0m" 201 -
+2025-01-01 12:46:40,361 INFO:127.0.0.1 - - [01/Jan/2025 12:46:40] "GET /api/registrations HTTP/1.1" 200 -
+2025-01-01 12:46:49,723 INFO:127.0.0.1 - - [01/Jan/2025 12:46:49] "GET /api/registrations-pdf/REG-20250101070123-4129cb9d HTTP/1.1" 200 -
+2025-01-01 12:47:04,550 INFO:127.0.0.1 - - [01/Jan/2025 12:47:04] "GET /api/registrations-excel HTTP/1.1" 200 -
+2025-01-01 12:47:36,122 INFO:127.0.0.1 - - [01/Jan/2025 12:47:36] "GET /api/registration-files HTTP/1.1" 200 -
+2025-01-01 12:47:41,584 INFO:127.0.0.1 - - [01/Jan/2025 12:47:41] "GET /api/registration-file/REG-20250101070123-4129cb9d HTTP/1.1" 200 -
+2025-01-01 12:47:44,497 INFO:127.0.0.1 - - [01/Jan/2025 12:47:44] "GET /uploads/udit_yadav_cover_letter.pdf HTTP/1.1" 200 -
+2025-01-01 12:47:44,616 INFO:127.0.0.1 - - [01/Jan/2025 12:47:44] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-01-01 12:48:35,632 INFO:127.0.0.1 - - [01/Jan/2025 12:48:35] "GET /api/registrations HTTP/1.1" 200 -
+2025-01-01 12:53:53,562 INFO:127.0.0.1 - - [01/Jan/2025 12:53:53] "GET /api/registration-files HTTP/1.1" 200 -
+2025-01-01 12:53:58,230 INFO:127.0.0.1 - - [01/Jan/2025 12:53:58] "GET /api/registration-file/REG-20250101070123-4129cb9d HTTP/1.1" 200 -
+2025-01-01 12:54:00,355 INFO:127.0.0.1 - - [01/Jan/2025 12:54:00] "GET /uploads/udit_yadav_cover_letter.pdf HTTP/1.1" 200 -
+2025-01-01 13:23:21,737 INFO: * Detected change in 'E:\\Navata\\NAPS\\napsbe\\app.py', reloading
+2025-01-01 13:23:22,058 INFO: * Restarting with stat
+2025-01-01 13:24:03,928 INFO:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-01-01 13:24:03,929 INFO:[33mPress CTRL+C to quit[0m
+2025-01-01 13:24:03,934 INFO: * Restarting with stat
+2025-01-01 13:24:06,895 WARNING: * Debugger is active!
+2025-01-01 13:24:06,901 INFO: * Debugger PIN: 101-903-271
+2025-01-01 13:33:15,285 INFO:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-01-01 13:33:15,289 INFO:[33mPress CTRL+C to quit[0m
+2025-01-01 13:33:15,289 INFO: * Restarting with stat
+2025-01-01 13:33:17,287 WARNING: * Debugger is active!
+2025-01-01 13:33:17,287 INFO: * Debugger PIN: 101-903-271
+2025-01-01 15:41:35,408 INFO:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-01-01 15:41:35,408 INFO:[33mPress CTRL+C to quit[0m
+2025-01-01 15:41:35,416 INFO: * Restarting with stat
+2025-01-01 15:41:37,509 WARNING: * Debugger is active!
+2025-01-01 15:41:37,509 INFO: * Debugger PIN: 101-903-271
+2025-01-03 14:37:19,425 INFO:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-01-03 14:37:19,425 INFO:[33mPress CTRL+C to quit[0m
+2025-01-03 14:37:19,425 INFO: * Restarting with stat
+2025-01-03 14:37:21,605 WARNING: * Debugger is active!
+2025-01-03 14:37:21,615 INFO: * Debugger PIN: 101-903-271
+2025-01-03 16:44:47,989 INFO:127.0.0.1 - - [03/Jan/2025 16:44:47] "OPTIONS /admin/login HTTP/1.1" 200 -
+2025-01-03 16:44:48,553 INFO:127.0.0.1 - - [03/Jan/2025 16:44:48] "POST /admin/login HTTP/1.1" 200 -
+2025-01-03 16:44:48,625 INFO:127.0.0.1 - - [03/Jan/2025 16:44:48] "GET /api/registrations HTTP/1.1" 200 -
+2025-01-03 16:45:01,452 INFO:127.0.0.1 - - [03/Jan/2025 16:45:01] "GET /api/registrations-pdf/REG-20241229221531-534365bb HTTP/1.1" 200 -
+2025-01-03 16:45:08,159 INFO:127.0.0.1 - - [03/Jan/2025 16:45:08] "GET /api/registration-files HTTP/1.1" 200 -
+2025-01-03 16:45:10,373 INFO:127.0.0.1 - - [03/Jan/2025 16:45:10] "GET /api/registration-file/REG-20241230081913-ff0b8e20 HTTP/1.1" 200 -
+2025-01-03 16:45:12,818 INFO:127.0.0.1 - - [03/Jan/2025 16:45:12] "GET /uploads/napscon_2025.jpg HTTP/1.1" 200 -
+2025-01-03 16:45:13,050 INFO:127.0.0.1 - - [03/Jan/2025 16:45:13] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-01-03 16:45:16,412 INFO:127.0.0.1 - - [03/Jan/2025 16:45:16] "GET /enquiry HTTP/1.1" 200 -
+2025-01-03 16:45:19,088 INFO:127.0.0.1 - - [03/Jan/2025 16:45:19] "GET /enquiry/7 HTTP/1.1" 200 -
+2025-01-03 16:46:05,862 INFO:127.0.0.1 - - [03/Jan/2025 16:46:05] "OPTIONS /admin/login HTTP/1.1" 200 -
+2025-01-03 16:46:06,464 INFO:127.0.0.1 - - [03/Jan/2025 16:46:06] "POST /admin/login HTTP/1.1" 200 -
+2025-01-03 16:46:06,514 INFO:127.0.0.1 - - [03/Jan/2025 16:46:06] "GET /api/registrations HTTP/1.1" 200 -
+2025-01-03 16:53:56,613 INFO:127.0.0.1 - - [03/Jan/2025 16:53:56] "[31m[1mPOST /register HTTP/1.1[0m" 400 -
+2025-01-03 16:54:01,380 INFO:127.0.0.1 - - [03/Jan/2025 16:54:01] "[31m[1mPOST /register HTTP/1.1[0m" 400 -
+2025-01-03 16:54:07,876 INFO:127.0.0.1 - - [03/Jan/2025 16:54:07] "[31m[1mPOST /register HTTP/1.1[0m" 400 -
+2025-01-03 16:54:08,089 INFO:127.0.0.1 - - [03/Jan/2025 16:54:08] "[31m[1mPOST /register HTTP/1.1[0m" 400 -
+2025-01-03 16:54:09,298 INFO:127.0.0.1 - - [03/Jan/2025 16:54:09] "[35m[1mPOST /register HTTP/1.1[0m" 201 -
+2025-01-03 16:57:32,031 INFO:127.0.0.1 - - [03/Jan/2025 16:57:32] "GET /api/registrations HTTP/1.1" 200 -
+2025-01-03 16:57:36,552 INFO:127.0.0.1 - - [03/Jan/2025 16:57:36] "GET /api/registrations HTTP/1.1" 200 -
+2025-01-03 16:57:38,811 INFO:127.0.0.1 - - [03/Jan/2025 16:57:38] "GET /api/registrations HTTP/1.1" 200 -
+2025-01-03 16:58:59,354 INFO:127.0.0.1 - - [03/Jan/2025 16:58:59] "GET /api/registrations HTTP/1.1" 200 -
+2025-01-03 16:59:07,725 INFO:127.0.0.1 - - [03/Jan/2025 16:59:07] "GET /api/registrations HTTP/1.1" 200 -
+2025-01-03 16:59:10,938 INFO:127.0.0.1 - - [03/Jan/2025 16:59:10] "GET /api/registrations HTTP/1.1" 200 -
+2025-01-03 16:59:12,603 INFO:127.0.0.1 - - [03/Jan/2025 16:59:12] "GET /api/registrations HTTP/1.1" 200 -
+2025-01-03 16:59:17,921 INFO:127.0.0.1 - - [03/Jan/2025 16:59:17] "GET /api/registrations HTTP/1.1" 200 -
+2025-01-03 16:59:19,760 INFO:127.0.0.1 - - [03/Jan/2025 16:59:19] "GET /api/registrations HTTP/1.1" 200 -
+2025-01-03 16:59:22,007 INFO:127.0.0.1 - - [03/Jan/2025 16:59:22] "GET /api/registrations HTTP/1.1" 200 -
+2025-01-03 16:59:31,988 INFO:127.0.0.1 - - [03/Jan/2025 16:59:31] "OPTIONS /admin/login HTTP/1.1" 200 -
+2025-01-03 16:59:32,542 INFO:127.0.0.1 - - [03/Jan/2025 16:59:32] "POST /admin/login HTTP/1.1" 200 -
+2025-01-03 16:59:32,595 INFO:127.0.0.1 - - [03/Jan/2025 16:59:32] "GET /api/registrations HTTP/1.1" 200 -
+2025-01-03 17:03:28,264 INFO:127.0.0.1 - - [03/Jan/2025 17:03:28] "GET /api/registrations HTTP/1.1" 200 -
+2025-01-03 17:03:28,290 INFO:127.0.0.1 - - [03/Jan/2025 17:03:28] "GET /api/registrations HTTP/1.1" 200 -
+2025-01-03 17:03:35,274 INFO:127.0.0.1 - - [03/Jan/2025 17:03:35] "GET /api/registrations HTTP/1.1" 200 -
+2025-01-03 17:03:35,299 INFO:127.0.0.1 - - [03/Jan/2025 17:03:35] "GET /api/registrations HTTP/1.1" 200 -
+2025-01-03 17:22:08,670 INFO:127.0.0.1 - - [03/Jan/2025 17:22:08] "OPTIONS /enquiry HTTP/1.1" 200 -
+2025-01-03 17:22:08,703 INFO:127.0.0.1 - - [03/Jan/2025 17:22:08] "[35m[1mPOST /enquiry HTTP/1.1[0m" 201 -
+2025-01-04 01:50:22,535 INFO:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-01-04 01:50:22,535 INFO:[33mPress CTRL+C to quit[0m
+2025-01-04 01:50:22,547 INFO: * Restarting with stat
+2025-01-04 01:50:24,561 WARNING: * Debugger is active!
+2025-01-04 01:50:24,562 INFO: * Debugger PIN: 101-903-271
+2025-01-04 01:50:25,470 INFO:127.0.0.1 - - [04/Jan/2025 01:50:25] "OPTIONS /admin/login HTTP/1.1" 200 -
+2025-01-04 01:50:25,856 INFO:127.0.0.1 - - [04/Jan/2025 01:50:25] "POST /admin/login HTTP/1.1" 200 -
+2025-01-04 01:50:25,913 INFO:127.0.0.1 - - [04/Jan/2025 01:50:25] "GET /api/registrations HTTP/1.1" 200 -
+2025-01-04 01:50:31,583 INFO:127.0.0.1 - - [04/Jan/2025 01:50:31] "GET /api/registration-files HTTP/1.1" 200 -
+2025-01-04 01:50:33,467 INFO:127.0.0.1 - - [04/Jan/2025 01:50:33] "GET /enquiry HTTP/1.1" 200 -
+2025-01-04 01:50:37,340 INFO:127.0.0.1 - - [04/Jan/2025 01:50:37] "GET /api/registrations HTTP/1.1" 200 -
+2025-01-04 01:53:26,882 INFO:127.0.0.1 - - [04/Jan/2025 01:53:26] "OPTIONS /enquiry HTTP/1.1" 200 -
+2025-01-04 01:53:26,906 INFO:127.0.0.1 - - [04/Jan/2025 01:53:26] "[35m[1mPOST /enquiry HTTP/1.1[0m" 201 -
+2025-01-05 14:13:54,387 INFO:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-01-05 14:13:54,397 INFO:[33mPress CTRL+C to quit[0m
+2025-01-05 14:13:54,400 INFO: * Restarting with stat
+2025-01-05 14:13:56,669 WARNING: * Debugger is active!
+2025-01-05 14:13:56,669 INFO: * Debugger PIN: 101-903-271
+2025-01-05 14:14:22,402 INFO:127.0.0.1 - - [05/Jan/2025 14:14:22] "OPTIONS /admin/login HTTP/1.1" 200 -
+2025-01-05 14:14:22,864 INFO:127.0.0.1 - - [05/Jan/2025 14:14:22] "[31m[1mPOST /admin/login HTTP/1.1[0m" 401 -
+2025-01-05 14:14:42,313 INFO:127.0.0.1 - - [05/Jan/2025 14:14:42] "OPTIONS /admin/login HTTP/1.1" 200 -
+2025-01-05 14:14:42,699 INFO:127.0.0.1 - - [05/Jan/2025 14:14:42] "POST /admin/login HTTP/1.1" 200 -
+2025-01-05 14:14:42,747 INFO:127.0.0.1 - - [05/Jan/2025 14:14:42] "GET /api/registrations HTTP/1.1" 200 -
+2025-01-05 14:14:45,408 INFO:127.0.0.1 - - [05/Jan/2025 14:14:45] "GET /enquiry HTTP/1.1" 200 -
+2025-01-05 14:14:48,095 INFO:127.0.0.1 - - [05/Jan/2025 14:14:48] "GET /api/registration-files HTTP/1.1" 200 -
+2025-01-05 14:14:50,753 INFO:127.0.0.1 - - [05/Jan/2025 14:14:50] "GET /api/registrations HTTP/1.1" 200 -
+2025-01-05 14:14:53,238 INFO:127.0.0.1 - - [05/Jan/2025 14:14:53] "GET /api/registrations-pdf/REG-20241229221444-60c89692 HTTP/1.1" 200 -
+2025-01-05 14:21:02,964 INFO:127.0.0.1 - - [05/Jan/2025 14:21:02] "GET /api/registrations HTTP/1.1" 200 -
+2025-01-05 14:21:04,566 INFO:127.0.0.1 - - [05/Jan/2025 14:21:04] "GET /api/registrations HTTP/1.1" 200 -
+2025-01-05 14:32:44,894 INFO:127.0.0.1 - - [05/Jan/2025 14:32:44] "OPTIONS /admin/login HTTP/1.1" 200 -
+2025-01-05 14:32:45,289 INFO:127.0.0.1 - - [05/Jan/2025 14:32:45] "POST /admin/login HTTP/1.1" 200 -
+2025-01-05 14:32:45,347 INFO:127.0.0.1 - - [05/Jan/2025 14:32:45] "GET /api/registrations HTTP/1.1" 200 -
+2025-01-05 16:34:57,785 INFO:127.0.0.1 - - [05/Jan/2025 16:34:57] "[33mGET /admin/doctor/list HTTP/1.1[0m" 404 -
+2025-01-06 14:45:55,145 INFO:127.0.0.1 - - [06/Jan/2025 14:45:55] "[33mGET /admin/doctor/list HTTP/1.1[0m" 404 -
+2025-01-06 14:53:57,887 INFO:127.0.0.1 - - [06/Jan/2025 14:53:57] "OPTIONS /enquiry HTTP/1.1" 200 -
+2025-01-06 14:53:58,062 INFO:127.0.0.1 - - [06/Jan/2025 14:53:58] "[35m[1mPOST /enquiry HTTP/1.1[0m" 201 -
+2025-01-06 18:41:23,870 INFO: * Detected change in 'E:\\Navata\\NAPS\\napsbe\\app.py', reloading
+2025-01-06 18:41:24,472 INFO: * Restarting with stat
+2025-01-06 18:41:29,748 WARNING: * Debugger is active!
+2025-01-06 18:41:29,753 INFO: * Debugger PIN: 101-903-271
+2025-01-06 19:05:12,165 INFO: * Detected change in 'E:\\Navata\\NAPS\\napsbe\\app.py', reloading
+2025-01-06 19:05:12,448 INFO: * Restarting with stat
