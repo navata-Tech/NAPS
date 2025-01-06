@@ -44,7 +44,7 @@ const TeamPage = () => {
             <div className="member">
               <div className="member-name">
                 <img src={img3} alt="Caitlyn King" />
-                <h3>Dr. Anupama Thapa</h3>
+                <h3>Prof. Dr. Anupama Thapa</h3>
               </div>
               <p>Vice President</p>
             </div>

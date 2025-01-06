@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react"; // Add this import
+import { useState, useEffect } from "react"; // Add this import
 import axios from "axios";
 import "../css/register-about.css";
-
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -110,7 +109,6 @@ const Register = () => {
     return Object.keys(tempErrors).length === 0;
   };
 
-
   const handleChange = (e) => {
     const { name, value, type, checked, files } = e.target;
 
@@ -124,10 +122,13 @@ const Register = () => {
 
     if (name === "category") {
       const fee = categoryFees[value] || "0";
-      const currency = value.includes("SAARC") || value.includes("International") ? "$" : "NPR";
+      const currency =
+        value.includes("SAARC") || value.includes("International")
+          ? "$"
+          : "NPR";
       setRegistrationFee(`${currency} ${fee}`);
     }
-  
+
     if (name === "spouse" || name === "category") {
       calculateTotalAmount({
         ...formData,
@@ -139,21 +140,25 @@ const Register = () => {
   useEffect(() => {
     calculateTotalAmount(formData);
   }, [formData.category, formData.spouse, formData.accDesignation]);
-  
+
   const calculateTotalAmount = (updatedFormData) => {
     let total = parseFloat(categoryFees[updatedFormData.category] || 0);
-    const isForeign = updatedFormData.category.includes("SAARC") || updatedFormData.category.includes("International");
-  
+    const isForeign =
+      updatedFormData.category.includes("SAARC") ||
+      updatedFormData.category.includes("International");
+
     if (updatedFormData.spouse) {
       const spouseAmount = spouseFee[isForeign ? "$" : "NPR"] || 0;
       total += spouseAmount * updatedFormData.accDesignation.length;
     }
-  
+
     const currency = isForeign ? "$" : "NPR";
-    setRegistrationFee(`${currency} ${parseFloat(categoryFees[updatedFormData.category] || 0)}`);
+    setRegistrationFee(
+      `${currency} ${parseFloat(categoryFees[updatedFormData.category] || 0)}`
+    );
     setTotalAmount(`${currency} ${total}`);
   };
-  
+
   const handleSpouseDesignationChange = (index, value) => {
     const newDesignations = [...formData.accDesignation];
     newDesignations[index] = value;
@@ -170,28 +175,28 @@ const Register = () => {
   };
 
   const removeSpouseDesignation = (index) => {
-    const newDesignations = formData.accDesignation.filter((_, i) => i !== index);
+    const newDesignations = formData.accDesignation.filter(
+      (_, i) => i !== index
+    );
     setFormData({ ...formData, accDesignation: newDesignations });
     calculateTotalAmount({ ...formData, accDesignation: newDesignations });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     if (!validateForm()) {
       setErrorMessage("Please fill out all required fields.");
       return;
     }
-  
+
     // Ensure numeric values for backend
-    const registrationFeeValue = parseFloat(
-      registrationFee.replace(/[^\d.-]/g, "")
-    ) || 0;
-  
-    const totalAmountValue = parseFloat(
-      totalAmount.replace(/[^\d.-]/g, "")
-    ) || 0;
-  
+    const registrationFeeValue =
+      parseFloat(registrationFee.replace(/[^\d.-]/g, "")) || 0;
+
+    const totalAmountValue =
+      parseFloat(totalAmount.replace(/[^\d.-]/g, "")) || 0;
+
     const dataToSend = new FormData();
     Object.entries(formData).forEach(([key, value]) => {
       if (key === "file") {
@@ -202,18 +207,22 @@ const Register = () => {
         dataToSend.append(key, value);
       }
     });
-  
+
     // Append numeric values
     dataToSend.append("registrationFee", registrationFeeValue);
     dataToSend.append("totalAmount", totalAmountValue);
-  
+
     try {
-      const response = await axios.post("http://127.0.0.1:5000/register", dataToSend, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-  
+      const response = await axios.post(
+        `${import.meta.env.VITE_SERVERAPI}/register`,
+        dataToSend,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
       if (response.status === 200 || response.status === 201) {
         setIsSubmitted(true);
         setErrorMessage("");
@@ -249,21 +258,22 @@ const Register = () => {
     } catch (error) {
       if (error.response && error.response.status === 400) {
         // Handle the case when the email already exists or any other validation error
-        console.error('Error: ', error.response.data.error);
-        setErrorMessage(`Error: ${error.response.data.error}`);  // Display the error message
+        console.error("Error: ", error.response.data.error);
+        setErrorMessage(`Error: ${error.response.data.error}`); // Display the error message
         alert(`Error: ${error.response.data.error}`);
       } else {
-        console.error('Unexpected error:', error);
+        console.error("Unexpected error:", error);
         setErrorMessage("Something went wrong. Please try again.");
       }
     }
   };
-  
+
   const renderPaymentMethodFields = () => {
     if (formData.country === "India") {
       return (
         <div className="payment-info">
           <h3>Bank Details (India):</h3>
+          <h3>Account Name: Vikas Joon</h3>
           <p>Account Number: 375201500109</p>
           <p>Bank: ICICI Bank</p>
           <p>IFSC Code: ICIC0000461</p>
@@ -278,7 +288,7 @@ const Register = () => {
           <img
             src="/img4.jpg"
             alt="QR Code"
-            style={{ width: "300px", height: "400px" }}
+            style={{ width: "300px", height: "300px" }}
           />
           <p style={{ fontWeight: "bold" }}>Scan the QR Code for payment</p>
           <p style={{ fontWeight: "bold" }}>
@@ -289,7 +299,7 @@ const Register = () => {
           <p style={{ fontWeight: "bold" }}>
             Bank: Himalayan bank Ltd Maharajgunj
           </p>
-          <p>Swift Code :- HIMANPKA</p>
+          <p style={{ fontWeight: "bold" }}>Esewa Number : 9851029644</p>
         </div>
       );
     }
@@ -305,11 +315,15 @@ const Register = () => {
             value={formData.foreignCountry || ""}
           />
           <div className="payment-info">
-            <h3>Bank Details (India):</h3>
-            <p>Account Number: 375201500109</p>
-            <p style={{ fontWeight: "bold" }}>Bank: ICICI Bank</p>
-            <p>IFSC Code: ICIC0000461</p>
-            <p>Branch: Bahadurgarh, Haryana</p>
+            <h3>Bank Details (Others):</h3>
+            <p style={{ fontWeight: "bold" }}>Bank: Himalayan bank Ltd</p>
+            <p>Account Number: 00205769070018</p>
+            <p>Swift Code: HIMANPKA</p>
+            <p>
+              Branch Account name:- Nepalese Association of Pediatric Surgeons
+              (NAPS)
+            </p>
+            <p>Branch: Maharajgunj, Nepal</p>
           </div>
         </div>
       );

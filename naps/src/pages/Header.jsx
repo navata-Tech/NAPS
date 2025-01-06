@@ -37,15 +37,15 @@ const Header = () => {
           </Link>
 
           <Link to="/about-us" className="mr-5 hover:text-third">
-            About
+            About Us
           </Link>
 
           <Link to="/team" className="mr-5 hover:text-third">
-            Our-Team
+            Our Team
           </Link>
 
           <Link to="/contact-us" className="mr-5 hover:text-third">
-            Contact
+            Contact Us
           </Link>
 
           {/* Navigate to the Register Page */}

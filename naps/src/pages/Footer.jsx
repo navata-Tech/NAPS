@@ -70,7 +70,7 @@ const Footer = () => {
         className="footer-bottom"
         style={{
           textAlign: "center",
-          padding: "1rem 0",
+          padding: "32px 0 16px 0",
         }}
       >
         <p
