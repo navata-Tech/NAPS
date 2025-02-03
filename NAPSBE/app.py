@@ -42,11 +42,11 @@ app.config['UPLOAD_FOLDER'] = 'uploads/'
 if not os.path.exists(app.config['UPLOAD_FOLDER']):
     os.makedirs(app.config['UPLOAD_FOLDER'])
 
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:@localhost/naps'
-# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://napsorg_admin:%40Naps%40321%40@localhost/napsorg_naps'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:@localhost/naps'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://napsorg_admin:%40Naps%40321%40@localhost/napsorg_naps'
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 
 
@@ -98,9 +98,9 @@ def handle_options_request():
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USE_SSL'] = True
-app.config['MAIL_USERNAME'] = 'Pedsurg.nepal@gmail.com'  # Your email address
-app.config['MAIL_PASSWORD'] = 'whoh ktsl uchc ldnh'  # Your email password (or app-specific password)
-app.config['MAIL_DEFAULT_SENDER'] = 'Pedsurg.nepal@gmail.com'
+app.config['MAIL_USERNAME'] = 'technavata@gmail.com'  # Your email address
+app.config['MAIL_PASSWORD'] = 'egtm vowb buen tvqn'  # Your email password (or app-specific password)
+app.config['MAIL_DEFAULT_SENDER'] = 'technavata@gmail.com'
 
 mail = Mail(app)
 
@@ -351,7 +351,7 @@ def create_registration():
         mail.send(user_message)
 
         # Send notification email to the admin
-        admin_email = 'udityadav2221@gmail.com'
+        admin_email = 'groupnavata@gmail.com'
         admin_message = Message(
             'New Registration Submitted',
             recipients=[admin_email]
@@ -395,26 +395,27 @@ def list_all_registration_files():
         # Query all registrations that have uploaded files
         registrations = Registration.query.filter(Registration.file_name.isnot(None)).all()
 
-        # If no registrations with files exist
+        # If no registrations with files exist, return an empty list
         if not registrations:
-            return jsonify({'message': 'No files uploaded yet'}), 404
+            return jsonify([]), 200
 
         # Prepare the list of registration details with files
-        files_data = []
-        for registration in registrations:
-            files_data.append({
+        files_data = [
+            {
                 'registration_number': registration.registration_number,
                 'name': registration.full_name,
                 'total_amount': registration.total_amount,
                 'file_name': registration.file_name,
                 'file_url': f'/uploads/{registration.file_name}'
-            })
+            }
+            for registration in registrations
+        ]
 
-        return jsonify(files_data)
+        return jsonify(files_data), 200
 
     except Exception as e:
         logging.error(f"Error listing uploaded files: {e}")
-        return jsonify({'message': 'Error fetching file list', 'error': str(e)}), 500
+        return jsonify({'message': 'Error fetching file list', 'error': str(e)}), 5
 
 @app.route('/api/registration-file/<registration_number>', methods=['GET'])
 def get_registration_file(registration_number):
