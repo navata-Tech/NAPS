@@ -79,6 +79,21 @@ h3 {
   gap: 60px;
 }
 
+.slider-address {
+  font-size: 24px !important;
+  font-weight: 600;
+  line-height: 44px !important;
+  color: var(--secondary-color);
+  text-align: center !important;
+}
+
+.slider-address span {
+  /* font-family: Courier, monospace; */
+  font-size: 40px !important;
+  font-family: "Kanit", serif;
+  font-weight: 600;
+}
+
 .member {
   background-color: white;
   border-radius: 10px;
@@ -138,16 +153,18 @@ p {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-between;
   font-size: 18px;
   padding-top: 16px;
   border: 1px solid var(--primary-color);
   box-shadow: 4px 4px 6px rgba(241, 137, 137, 0.2);
   border-radius: 8px;
-  width: 282px;
+  width: 260px;
 }
 
 .contact-to-details span {
   padding-bottom: 16px;
+  text-align: center;
 }
 
 .contact-to-details span i {
@@ -196,6 +213,18 @@ p {
 }
 
 @media (max-width: 600px) {
+  .slider-address {
+    font-size: 18px !important;
+    text-align: center !important;
+    font-weight: 600;
+    line-height: 32px !important;
+    color: var(--secondary-color);
+  }
+
+  .slider-address span {
+    font-size: 30px !important;
+    font-family: "Kanit", serif;
+  }
   .content-img-holder {
     flex-direction: column;
     padding: 30px;

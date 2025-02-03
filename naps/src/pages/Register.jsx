@@ -35,13 +35,16 @@ const Register = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [errors, setErrors] = useState({});
 
+    // NEW: Loading state for submission
+    const [isLoading, setIsLoading] = useState(false);
+
   const categoryFees = {
-    "SSN Members EARLY BIRD TILL FEB 28": "12000",
-    "SSN Members REGULAR UP TO MARCH 31": "14000",
-    "SSN Members SPOT REGISTRATION": "16000",
-    "SSN-Non Members EARLY BIRD TILL FEB 28": "14000",
-    "SSN-Non Members REGULAR UP TO MARCH 31": "16000",
-    "SSN-Non Members SPOT REGISTRATION": "18000",
+    "NAPS Members EARLY BIRD TILL FEB 28": "12000",
+    "NAPS Members REGULAR UP TO MARCH 31": "14000",
+    "NAPS Members SPOT REGISTRATION": "16000",
+    "NAPS-Non Members EARLY BIRD TILL FEB 28": "14000",
+    "NAPS-Non Members REGULAR UP TO MARCH 31": "16000",
+    "NAPS-Non Members SPOT REGISTRATION": "18000",
     "Associate Members/Residents": "10000",
     "SAARC Delegates EARLY BIRD TILL FEB 28": "150",
     "SAARC Delegates REGULAR UP TO MARCH 31": "175",
@@ -190,6 +193,9 @@ const Register = () => {
       return;
     }
 
+    // Set loading state to true
+    setIsLoading(true);
+
     // Ensure numeric values for backend
     const registrationFeeValue =
       parseFloat(registrationFee.replace(/[^\d.-]/g, "")) || 0;
@@ -265,6 +271,9 @@ const Register = () => {
         console.error("Unexpected error:", error);
         setErrorMessage("Something went wrong. Please try again.");
       }
+    }finally {
+      // Reset loading state
+      setIsLoading(false);
     }
   };
 
@@ -858,9 +867,15 @@ const Register = () => {
                   <button
                     className="primary-button"
                     type="submit"
-                    onClick={handleSubmit}
+                    disabled={isLoading} // Disable button when loading
                   >
-                    Submit <i className="fa-solid fa-arrow-right"></i>
+                    {isLoading ? (
+                      "Submitting..."
+                    ) : (
+                      <>
+                        Submit <i className="fa-solid fa-arrow-right"></i>
+                      </>
+                    )}
                   </button>
                 </div>
                 <div>
@@ -872,7 +887,7 @@ const Register = () => {
                           style={{ fontSize: "24px", marginRight: "10px" }}
                         ></i>
                         <span>
-                          Thank you for registration, you'll get confirmation
+                          Thank you for registration, you'll get a confirmation
                           email after verification.
                         </span>
                       </div>

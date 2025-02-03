@@ -59,6 +59,13 @@ const Imagesec = () => {
                   2nd International Conference of Nepalese Association of
                   Paediatric surgeons
                 </h1>
+                <p className="slider-address">
+                  {" "}
+                  <span>Hotel Himalaya</span>
+                  <br /> Kupondol Height, Lalitpur, Nepal <br />
+                  10th - 11th April, 2025
+                </p>
+
                 <p className="sub-title">
                   {/* We invite you to be a part of an enlightening experience at the Nepalese Association of Pediatric Surgeons' upcoming conference. This event brings together a community of expert speakers, renowned pediatric surgeons, and healthcare professionals from around the world.  */}
                 </p>

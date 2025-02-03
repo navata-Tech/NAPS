@@ -39,13 +39,16 @@ const ContactUsPage = () => {
     }
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_SERVERAPI}/enquiry`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_SERVERAPI}/enquiry`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
 
       const result = await response.json();
       if (response.ok) {
@@ -81,6 +84,15 @@ const ContactUsPage = () => {
   return (
     <>
       <div className="contact-to">
+        <div className="contact-to-details">
+          <span>Prof. Dr. Rameshwar Prasad Pokharel</span>
+          <span>
+            <a href="tel:+9779851029644">
+              <i className="fa-solid fa-phone" style={{ color: "#a01f62" }}></i>
+              9851064927
+            </a>
+          </span>
+        </div>
         <div className="contact-to-details">
           <span>Prof. Dr. Bijay Thapa</span>
           <span>
