@@ -11,6 +11,7 @@ const ContactUsPage = () => {
 
   const [confirmationMessage, setConfirmationMessage] = useState("");
   const [confirmationClass, setConfirmationClass] = useState("");
+  const [isLoading, setIsLoading] = useState(false); // NEW: Loading state
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -37,6 +38,7 @@ const ContactUsPage = () => {
       }, 5000); // Remove message after 5 seconds
       return; // Stop further execution if validation fails
     }
+    setIsLoading(true); // Set loading state to true before sending
 
     try {
       const response = await fetch(
@@ -79,6 +81,8 @@ const ContactUsPage = () => {
       setTimeout(() => {
         setConfirmationMessage("");
       }, 5000); // Remove message after 5 seconds
+    } finally {
+      setIsLoading(false); // Reset loading state when process is done
     }
   };
   return (
@@ -121,51 +125,55 @@ const ContactUsPage = () => {
           </span>
         </div>
       </div>
+
       <div className="enquiry-form-section">
         <div className="enquiry-form">
           <div className="form-heading">
             <h3>Enquiry Form</h3>
           </div>
-          <div className="contact-form-input">
-            <input
-              className="contact-box-field"
-              placeholder="Name *"
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleInputChange}
-            />
-            <input
-              className="contact-box-field"
-              placeholder="Phone *"
-              type="text"
-              name="phone"
-              value={formData.phone}
-              onChange={handleInputChange}
-            />
-            <input
-              className="contact-box-field"
-              placeholder="E-mail *"
-              type="text"
-              name="email"
-              value={formData.email}
-              onChange={handleInputChange}
-            />
-            <textarea
-              className="abstract-section"
-              placeholder="Message *"
-              name="message"
-              value={formData.message}
-              onChange={handleInputChange}
-            ></textarea>
-          </div>
-          <button
-            className="primary-button"
-            type="submit"
-            onClick={handleSubmit}
-          >
-            Send
-          </button>
+          {/* Wrap your inputs and button in a form element */}
+          <form onSubmit={handleSubmit}>
+            <div className="contact-form-input">
+              <input
+                className="contact-box-field"
+                placeholder="Name *"
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleInputChange}
+              />
+              <input
+                className="contact-box-field"
+                placeholder="Phone *"
+                type="text"
+                name="phone"
+                value={formData.phone}
+                onChange={handleInputChange}
+              />
+              <input
+                className="contact-box-field"
+                placeholder="E-mail *"
+                type="text"
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
+              />
+              <textarea
+                className="abstract-section"
+                placeholder="Message *"
+                name="message"
+                value={formData.message}
+                onChange={handleInputChange}
+              ></textarea>
+            </div>
+            <button
+              className="primary-button"
+              type="submit"
+              disabled={isLoading} // Disable button when sending
+            >
+              {isLoading ? "Sending..." : "Send"}
+            </button>
+          </form>
 
           {confirmationMessage && (
             <div className={confirmationClass}>
@@ -187,5 +195,4 @@ const ContactUsPage = () => {
     </>
   );
 };
-
 export default ContactUsPage;
